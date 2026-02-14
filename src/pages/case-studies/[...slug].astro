@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/utils';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('case-studies');
+  return caseStudies.map(study => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+const { Content } = await study.render();
+---
+
+<BaseLayout
+  title={study.data.title}
+  description={study.data.description}
+  type="article"
+  publishedDate={study.data.publishedDate}
+  ogImage={study.data.ogImage}
+>
+  <article class="section bg-white">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 list-none p-0 m-0">
+          <li><a href="/" class="text-gray-400 no-underline hover:text-sage">Home</a></li>
+          <li class="text-gray-300">/</li>
+          <li><a href="/case-studies" class="text-gray-400 no-underline hover:text-sage">Case Studies</a></li>
+          <li class="text-gray-300">/</li>
+          <li class="text-graphite font-bold">{study.data.company}</li>
+        </ol>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-10 max-w-3xl">
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-sage">{study.data.sector}</span>
+          <span class="badge badge-copper">{study.data.recommendation}</span>
+        </div>
+        <h1 class="mb-4">{study.data.title}</h1>
+        <p class="text-lg text-gray-600 mb-6">{study.data.description}</p>
+
+        <!-- Executive Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-alabaster rounded-lg">
+          {study.data.offer_price && (
+            <div>
+              <span class="text-xs text-gray-400 uppercase block">Offer Price</span>
+              <span class="font-data font-bold">SAR {study.data.offer_price.toFixed(2)}</span>
+            </div>
+          )}
+          {study.data.target_price && (
+            <div>
+              <span class="text-xs text-gray-400 uppercase block">Target Price</span>
+              <span class="font-data font-bold text-copper">SAR {study.data.target_price.toFixed(2)}</span>
+            </div>
+          )}
+          {study.data.valuation_sar && (
+            <div>
+              <span class="text-xs text-gray-400 uppercase block">Valuation</span>
+              <span class="font-data font-bold">SAR {(study.data.valuation_sar / 1_000_000_000).toFixed(1)}B</span>
+            </div>
+          )}
+          <div>
+            <span class="text-xs text-gray-400 uppercase block">Recommendation</span>
+            <span class="font-data font-bold text-copper">{study.data.recommendation}</span>
+          </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-4 mt-4 text-sm text-gray-400">
+          <span>By {study.data.author}</span>
+          <span>·</span>
+          <span>{formatDate(study.data.publishedDate)}</span>
+          <span>·</span>
+          <span>{study.data.reading_time} min read</span>
+        </div>
+      </header>
+
+      <!-- Article Body -->
+      <div class="prose mx-auto">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      <div class="max-w-3xl mx-auto mt-10 pt-6 border-t border-gray-200">
+        <h4 class="label text-gray-400 mb-3">Tags</h4>
+        <div class="flex flex-wrap gap-2">
+          {study.data.tags.map(tag => (
+            <span class="badge badge-sage">{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Back Link -->
+      <div class="max-w-3xl mx-auto mt-8">
+        <a href="/case-studies" class="btn-secondary text-sm py-2 px-4">
+          ← All Case Studies
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Newsletter CTA -->
+  <section class="section bg-sage">
+    <div class="container">
+      <div class="max-w-xl mx-auto text-center text-white">
+        <h2 class="text-white mb-3">Get More Analysis Like This</h2>
+        <p class="opacity-90 mb-6">Join finance professionals receiving our Saudi IPO insights.</p>
+        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input type="email" placeholder="your@email.com" required class="flex-1 px-4 py-3 rounded text-graphite text-sm" />
+          <button type="submit" class="px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:opacity-90 transition-opacity">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

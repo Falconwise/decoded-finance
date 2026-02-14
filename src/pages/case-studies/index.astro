@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/utils';
+
+const caseStudies = await getCollection('case-studies');
+const sortedStudies = caseStudies.sort((a, b) =>
+  new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
+);
+---
+
+<BaseLayout
+  title="IPO Case Studies"
+  description="In-depth analysis of Saudi Arabian IPOs with financial modeling and valuation. Professional equity research by Abdul Gaffar Mohammed, CFA."
+>
+  <section class="section bg-alabaster">
+    <div class="container">
+      <div class="mb-10">
+        <p class="label text-copper mb-2">Deep Analysis</p>
+        <h1 class="mb-3">IPO Case Studies</h1>
+        <p class="text-gray-600 max-w-2xl">
+          In-depth analysis of Saudi Arabian IPOs with financial modeling, valuation frameworks, and investment recommendations.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedStudies.map(study => (
+          <article class="card border-l-4 border-l-copper">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <span class="badge badge-sage">{study.data.sector}</span>
+              <span class="badge badge-copper">{study.data.recommendation}</span>
+            </div>
+            <h3 class="text-lg mb-2">
+              <a href={`/case-studies/${study.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
+                {study.data.title}
+              </a>
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 leading-relaxed">{study.data.description}</p>
+            <div class="flex flex-wrap gap-4 mb-4 font-data text-xs text-gray-500">
+              {study.data.valuation_sar && (
+                <span>Valuation: SAR {(study.data.valuation_sar / 1_000_000_000).toFixed(1)}B</span>
+              )}
+              {study.data.target_price && (
+                <span>Target: SAR {study.data.target_price.toFixed(2)}</span>
+              )}
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="meta">{formatDate(study.data.publishedDate)} · {study.data.reading_time} min</span>
+              <a href={`/case-studies/${study.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">
+                Read →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/utils';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) =>
+  new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
+);
+
+const allTags = [...new Set(sortedPosts.flatMap(p => p.data.tags))].sort();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Corporate finance, valuation, and Saudi capital markets commentary. Practical frameworks and analysis for professionals."
+>
+  <section class="section bg-alabaster">
+    <div class="container">
+      <div class="mb-10">
+        <p class="label text-copper mb-2">Insights</p>
+        <h1 class="mb-3">Blog</h1>
+        <p class="text-gray-600 max-w-2xl">
+          Corporate finance, valuation frameworks, and Saudi capital markets commentary. Practical insights for finance professionals.
+        </p>
+      </div>
+
+      <!-- Tag Filters -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <span class="badge badge-sage cursor-pointer">All</span>
+        {allTags.map(tag => (
+          <span class="badge bg-white text-gray-500 border border-gray-200 cursor-pointer hover:bg-sage-50">{tag}</span>
+        ))}
+      </div>
+
+      <!-- Blog Posts -->
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl">
+        {sortedPosts.map(post => (
+          <article class="card">
+            {post.data.featured && (
+              <span class="badge badge-copper mb-3">Featured</span>
+            )}
+            <h3 class="text-lg mb-2">
+              <a href={`/blog/${post.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 leading-relaxed">{post.data.description}</p>
+            <div class="flex flex-wrap gap-2 mb-3">
+              {post.data.tags.slice(0, 3).map(tag => (
+                <span class="text-xs text-gray-400">#{tag}</span>
+              ))}
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="meta">{formatDate(post.data.publishedDate)} · {post.data.reading_time} min</span>
+              <a href={`/blog/${post.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">
+                Read →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

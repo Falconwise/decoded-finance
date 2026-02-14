@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedDate={post.data.publishedDate}
+  ogImage={post.data.ogImage}
+>
+  <article class="section bg-white">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 list-none p-0 m-0">
+          <li><a href="/" class="text-gray-400 no-underline hover:text-sage">Home</a></li>
+          <li class="text-gray-300">/</li>
+          <li><a href="/blog" class="text-gray-400 no-underline hover:text-sage">Blog</a></li>
+          <li class="text-gray-300">/</li>
+          <li class="text-graphite font-bold truncate max-w-[200px]">{post.data.title}</li>
+        </ol>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-10 max-w-3xl">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {post.data.tags.map(tag => (
+            <span class="badge badge-sage">{tag}</span>
+          ))}
+        </div>
+        <h1 class="mb-4">{post.data.title}</h1>
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+          <span>By {post.data.author}</span>
+          <span>·</span>
+          <span>{formatDate(post.data.publishedDate)}</span>
+          <span>·</span>
+          <span>{post.data.reading_time} min read</span>
+        </div>
+      </header>
+
+      <!-- Article Body -->
+      <div class="prose mx-auto">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      <div class="max-w-3xl mx-auto mt-10 pt-6 border-t border-gray-200">
+        <div class="flex flex-wrap gap-2">
+          {post.data.tags.map(tag => (
+            <span class="badge badge-sage">{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Author Bio -->
+      <div class="max-w-3xl mx-auto mt-8 p-6 bg-alabaster rounded-lg">
+        <h4 class="font-heading text-base font-bold mb-2">Abdul Gaffar Mohammed, CFA</h4>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Corporate Treasury Professional managing SAR 1bn+ banking facilities. Building decoded.finance to provide independent, rigorous analysis of Saudi capital markets.
+        </p>
+      </div>
+
+      <!-- Back Link -->
+      <div class="max-w-3xl mx-auto mt-8">
+        <a href="/blog" class="btn-secondary text-sm py-2 px-4">← All Posts</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

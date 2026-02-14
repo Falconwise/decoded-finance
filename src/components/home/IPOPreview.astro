@@ -1,0 +1,66 @@
+---
+import { getRecentIPOs } from '../../data/ipo-data';
+import { formatDate } from '../../utils/utils';
+
+const recentIPOs = getRecentIPOs(4);
+---
+
+<section class="section bg-alabaster">
+  <div class="container">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <p class="label text-copper mb-2">Live Data</p>
+        <h2>Saudi IPO Tracker</h2>
+      </div>
+      <a href="/ipo-tracker" class="hidden sm:inline-flex btn-secondary text-sm py-2 px-4">View Full Tracker</a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="card text-center py-5">
+        <span class="font-data text-2xl font-bold text-sage block">19</span>
+        <span class="text-sm text-gray-500">IPOs Tracked</span>
+      </div>
+      <div class="card text-center py-5">
+        <span class="font-data text-2xl font-bold text-sage block">SAR 158.8B</span>
+        <span class="text-sm text-gray-500">Total Market Cap</span>
+      </div>
+      <div class="card text-center py-5">
+        <span class="font-data text-2xl font-bold text-sage block">+38.7%</span>
+        <span class="text-sm text-gray-500">Average Return</span>
+      </div>
+      <div class="card text-center py-5">
+        <span class="font-data text-2xl font-bold text-sage block">8</span>
+        <span class="text-sm text-gray-500">Sectors Covered</span>
+      </div>
+    </div>
+
+    <!-- Recent IPO Cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {recentIPOs.map(ipo => (
+        <div class="card">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge badge-sage">{ipo.sector}</span>
+            <span class={`font-data text-sm font-bold ${ipo.return_from_ipo >= 0 ? 'performance-positive' : 'performance-negative'}`}>
+              {ipo.return_from_ipo > 0 ? '+' : ''}{ipo.return_from_ipo}%
+            </span>
+          </div>
+          <h4 class="font-heading text-base font-bold mb-1">{ipo.company_name}</h4>
+          <p class="text-xs text-gray-400 font-data mb-3">{ipo.symbol} · {formatDate(ipo.listing_date)}</p>
+          <div class="flex justify-between items-center text-sm">
+            <span class="text-gray-500">IPO Price</span>
+            <span class="font-data font-bold">SAR {ipo.offer_price.toFixed(2)}</span>
+          </div>
+          <div class="flex justify-between items-center text-sm mt-1">
+            <span class="text-gray-500">Market Cap</span>
+            <span class="font-data font-bold">{ipo.market_cap_display}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-8 sm:hidden">
+      <a href="/ipo-tracker" class="btn-primary text-sm py-2 px-6">View Full Tracker</a>
+    </div>
+  </div>
+</section>
