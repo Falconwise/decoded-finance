@@ -1,1 +1,56 @@
-$path:tmp/about_updated.astro
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About - decoded.finance">
+  <div class="container mx-auto px-4 py-16 max-w-4xl">
+
+    <!-- Profile Section -->
+    <div class="mb-12 flex flex-col md:flex-row items-center md:items-start gap-8">
+      <img 
+        src="/images/profile.png" 
+        alt="Abdul Gaffar Mohammed" 
+        class="w-48 h-48 rounded-full object-cover shadow-lg"
+      />
+      <div class="flex-1">
+        <h1 class="text-4xl font-bold mb-4">About decoded.finance</h1>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="prose prose-lg max-w-none">
+      <p class="text-xl text-gray-700 mb-8">
+        decoded.finance is a research platform that tracks Saudi IPOs and publishes structured case studies on pricing, fundamentals, and post listing performance.
+      </p>
+
+      <p class="text-lg text-gray-700 mb-8">
+        The goal is simple: make IPO analysis repeatable. Each company is reviewed using the same template, the same definitions, and clearly stated assumptions.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">What you will find here</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li>A Saudi IPO tracker with searchable metrics and performance history</li>
+        <li>Case studies that break down the business, valuation logic, and key risks</li>
+        <li>Practical corporate finance frameworks that translate into decision memos and models</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">How the analysis is done</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li>Inputs are taken from public sources such as prospectuses, exchange disclosures, and company filings</li>
+        <li>Performance metrics follow consistent definitions across companies</li>
+        <li>When a number is uncertain or unavailable, it is flagged rather than guessed</li>
+        <li>Corrections are made when errors are found, with an updated date shown</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">About the author</h2>
+      <p class="text-lg text-gray-700">
+        Abdul Gaffar Mohammed, CFA, works in corporate finance and treasury in Saudi Arabia, focused on capital structure, financing, and valuation driven decision making.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Important note</h2>
+      <p class="text-lg text-gray-700">
+        decoded.finance is research and education. It is not investment advice.
+      </p>
+    </div>
+  </div>
+</Layout>
