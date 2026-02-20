@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import IPOTable from '../components/ipo-tracker/IPOTable';
+import { getCollection } from 'astro:content';
 import { ipoData, getUniqueSectors } from '../data/ipo-data';
 
 const sectors = getUniqueSectors();
 const totalMarketCap = (ipoData.summary_stats.total_market_cap / 1_000_000_000).toFixed(1);
+const caseStudies = await getCollection('case-studies');
+const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
 ---
 
 <BaseLayout
@@ -51,7 +54,19 @@ const totalMarketCap = (ipoData.summary_stats.total_market_cap / 1_000_000_000).
 
       <!-- Interactive IPO Table (React Island) -->
       <div class="card p-4 md:p-6">
-        <IPOTable client:load data={ipoData.ipos} sectors={sectors} />
+        <div class="mb-4 p-3 rounded bg-alabaster border border-gray-200">
+          <p class="text-xs text-gray-600 m-0 leading-relaxed">
+            <strong>As of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            <span class="mx-2">•</span>
+            <strong>Source:</strong> {ipoData.metadata.data_source}
+          </p>
+        </div>
+        <IPOTable
+          client:load
+          data={ipoData.ipos}
+          sectors={sectors}
+          availableCaseStudySlugs={availableCaseStudySlugs}
+        />
       </div>
 
       <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">

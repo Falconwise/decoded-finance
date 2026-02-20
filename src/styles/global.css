@@ -364,3 +364,75 @@ h3 { font-size: 1.5rem; }
 .skip-link:focus {
   top: 0;
 }
+
+/* ---- Header mobile navigation ---- */
+
+.mobile-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text-graphite);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.mobile-menu-button:focus-visible {
+  outline: 2px solid var(--primary-sage);
+  outline-offset: 2px;
+}
+
+.mobile-nav-panel {
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 10px 0;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.mobile-nav-link:hover {
+  color: var(--primary-sage);
+}
+
+body.mobile-nav-open {
+  overflow: hidden;
+}
+
+/* ---- Blog topic chips ---- */
+
+.topic-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #fff;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 0.35rem 0.7rem;
+  transition: all 0.2s ease;
+}
+
+.topic-chip:hover {
+  border-color: #cbd5d1;
+  color: #54634e;
+  background: #f9fafb;
+}
+
+.topic-chip.is-active {
+  background: #e5e9e3;
+  border-color: #d6ddd2;
+  color: #54634e;
+}

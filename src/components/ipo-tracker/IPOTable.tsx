@@ -13,9 +13,10 @@ import type { IPORecord } from '../../data/ipo-data';
 interface Props {
     data: IPORecord[];
     sectors: string[];
+    availableCaseStudySlugs: string[];
 }
 
-export default function IPOTable({ data, sectors }: Props) {
+export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Props) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState('');
     const [sectorFilter, setSectorFilter] = useState('all');
@@ -24,6 +25,9 @@ export default function IPOTable({ data, sectors }: Props) {
         if (sectorFilter === 'all') return data;
         return data.filter((ipo) => ipo.sector === sectorFilter);
     }, [data, sectorFilter]);
+
+    const hasPublishedCaseStudy = (ipo: IPORecord) =>
+        ipo.has_case_study && availableCaseStudySlugs.includes(ipo.id);
 
     const columns = useMemo<ColumnDef<IPORecord>[]>(
         () => [
@@ -112,9 +116,9 @@ export default function IPOTable({ data, sectors }: Props) {
             },
             {
                 accessorKey: 'has_case_study',
-                header: '',
+                header: 'Analysis',
                 cell: ({ row }) =>
-                    row.original.has_case_study ? (
+                    hasPublishedCaseStudy(row.original) ? (
                         <a
                             href={`/case-studies/${row.original.id}`}
                             style={{
@@ -124,13 +128,15 @@ export default function IPOTable({ data, sectors }: Props) {
                                 textDecoration: 'none',
                             }}
                         >
-                            Analysis →
+                            Read analysis →
                         </a>
-                    ) : null,
+                    ) : (
+                        <span style={{ color: '#888', fontSize: '0.8rem' }}>Coming soon</span>
+                    ),
                 enableSorting: false,
             },
         ],
-        []
+        [availableCaseStudySlugs]
     );
 
     const table = useReactTable({
@@ -282,10 +288,14 @@ export default function IPOTable({ data, sectors }: Props) {
                                     <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{ipo.market_cap_display}</span>
                                 </div>
                             </div>
-                            {ipo.has_case_study && (
+                            {hasPublishedCaseStudy(ipo) ? (
                                 <a href={`/case-studies/${ipo.id}`} style={{ display: 'inline-block', marginTop: '8px', color: '#B86E4B', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>
                                     Read Analysis →
                                 </a>
+                            ) : (
+                                <span style={{ display: 'inline-block', marginTop: '8px', color: '#888', fontWeight: 600, fontSize: '0.8rem' }}>
+                                    Analysis: Coming soon
+                                </span>
                             )}
                         </div>
                     );

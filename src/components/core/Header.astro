@@ -1,4 +1,4 @@
-﻿---
+---
 const navLinks = [
   { href: '/case-studies', label: 'Case Studies' },
   { href: '/blog', label: 'Blog' },
@@ -9,7 +9,7 @@ const navLinks = [
 ---
 
 <header class="bg-white border-b border-gray-200">
-  <div class="container py-4 flex items-center justify-between gap-4">
+  <div class="container py-4 flex items-center justify-between gap-4 relative">
     <a href="/" class="font-heading text-2xl font-bold text-graphite no-underline">
       decoded<span class="text-sage">.</span>finance
     </a>
@@ -26,7 +26,72 @@ const navLinks = [
       </ul>
     </nav>
 
-    <a href="https://www.linkedin.com/in/abdulgaffarcfa/" target="_blank" rel="noopener noreferrer" class="btn-primary text-sm py-2 px-4">LinkedIn</a>
+    <div class="hidden md:block">
+      <a href="https://www.linkedin.com/in/abdulgaffarcfa/" target="_blank" rel="noopener noreferrer" class="btn-primary text-sm py-2 px-4">LinkedIn</a>
+    </div>
+
+    <button
+      type="button"
+      class="mobile-menu-button md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-primary-nav"
+      aria-label="Open navigation menu"
+      data-mobile-nav-toggle
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
   </div>
+
+  <nav id="mobile-primary-nav" aria-label="Mobile primary" class="mobile-nav-panel md:hidden" hidden data-mobile-nav>
+    <div class="container py-4">
+      <ul class="list-none m-0 p-0 flex flex-col gap-2">
+        {navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="mobile-nav-link">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        href="https://www.linkedin.com/in/abdulgaffarcfa/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary text-sm py-2 px-4 mt-4"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </nav>
 </header>
 
+<script>
+  const toggle = document.querySelector('[data-mobile-nav-toggle]');
+  const panel = document.querySelector('[data-mobile-nav]');
+
+  if (toggle && panel) {
+    const setOpen = (isOpen) => {
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+      panel.hidden = !isOpen;
+      document.body.classList.toggle('mobile-nav-open', isOpen);
+    };
+
+    setOpen(false);
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    });
+  }
+</script>
