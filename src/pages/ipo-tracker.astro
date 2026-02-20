@@ -53,6 +53,12 @@ const totalMarketCap = (ipoData.summary_stats.total_market_cap / 1_000_000_000).
       <div class="card p-4 md:p-6">
         <IPOTable client:load data={ipoData.ipos} sectors={sectors} />
       </div>
+
+      <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
+        <p class="text-xs text-gray-600 m-0 leading-relaxed">
+          IPO tracker entries are informational snapshots and may be delayed, incomplete, or revised. They should not be treated as real-time market data or investment recommendations.
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>

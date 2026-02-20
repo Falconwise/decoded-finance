@@ -24,59 +24,64 @@ const { Content } = await post.render();
 >
   <article class="section bg-white">
     <div class="container">
-      <!-- Breadcrumb -->
-      <nav class="mb-6 text-sm" aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 list-none p-0 m-0">
-          <li><a href="/" class="text-gray-400 no-underline hover:text-sage">Home</a></li>
-          <li class="text-gray-300">/</li>
-          <li><a href="/blog" class="text-gray-400 no-underline hover:text-sage">Blog</a></li>
-          <li class="text-gray-300">/</li>
-          <li class="text-graphite font-bold truncate max-w-[200px]">{post.data.title}</li>
+      <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 list-none p-0 m-0 text-gray-500">
+          <li><a href="/" class="no-underline hover:text-sage">Home</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/blog" class="no-underline hover:text-sage">Blog</a></li>
+          <li aria-hidden="true">/</li>
+          <li class="text-graphite font-semibold truncate max-w-[220px] md:max-w-[460px]">{post.data.title}</li>
         </ol>
       </nav>
 
-      <!-- Header -->
-      <header class="mb-10 max-w-3xl">
+      <header class="max-w-4xl mb-10 md:mb-12 border-b border-gray-200 pb-8">
         <div class="flex flex-wrap gap-2 mb-4">
           {post.data.tags.map(tag => (
-            <span class="badge badge-sage">{tag}</span>
+            <span class="badge bg-sage-50 text-sage-700">{tag}</span>
           ))}
         </div>
-        <h1 class="mb-4">{post.data.title}</h1>
-        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-          <span>By {post.data.author}</span>
-          <span>·</span>
+        <h1 class="mb-5 leading-tight">{post.data.title}</h1>
+        <p class="text-gray-600 text-lg leading-relaxed mb-6 max-w-3xl">{post.data.description}</p>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+          <span class="font-semibold text-graphite">By {post.data.author}</span>
+          <span aria-hidden="true">•</span>
           <span>{formatDate(post.data.publishedDate)}</span>
-          <span>·</span>
+          <span aria-hidden="true">•</span>
           <span>{post.data.reading_time} min read</span>
         </div>
       </header>
 
-      <!-- Article Body -->
-      <div class="prose mx-auto">
-        <Content />
-      </div>
-
-      <!-- Tags -->
-      <div class="max-w-3xl mx-auto mt-10 pt-6 border-t border-gray-200">
-        <div class="flex flex-wrap gap-2">
-          {post.data.tags.map(tag => (
-            <span class="badge badge-sage">{tag}</span>
-          ))}
+      <div class="max-w-5xl">
+        <div class="reading-prose">
+          <Content />
         </div>
-      </div>
 
-      <!-- Author Bio -->
-      <div class="max-w-3xl mx-auto mt-8 p-6 bg-alabaster rounded-lg">
-        <h4 class="font-heading text-base font-bold mb-2">Abdul Gaffar Mohammed, CFA</h4>
-        <p class="text-sm text-gray-600 leading-relaxed">
-          Corporate Treasury Professional managing SAR 1bn+ banking facilities. Building decoded.finance to provide independent, rigorous analysis of Saudi capital markets.
-        </p>
-      </div>
+        <aside class="mt-12 p-5 md:p-6 bg-alabaster border border-gray-200 rounded-xl" aria-label="Article disclaimer">
+          <p class="text-xs text-gray-600 m-0 leading-relaxed">
+            This analysis reflects personal research and opinions prepared for educational purposes. It is not a recommendation to buy, sell, or hold any security or financial instrument. Always do your own research and consult a licensed professional before making financial decisions.
+          </p>
+        </aside>
 
-      <!-- Back Link -->
-      <div class="max-w-3xl mx-auto mt-8">
-        <a href="/blog" class="btn-secondary text-sm py-2 px-4">← All Posts</a>
+        <section class="mt-10 pt-7 border-t border-gray-200" aria-label="Article topics">
+          <p class="label text-gray-500 mb-3">Topics</p>
+          <div class="flex flex-wrap gap-2">
+            {post.data.tags.map(tag => (
+              <span class="badge badge-sage">{tag}</span>
+            ))}
+          </div>
+        </section>
+
+        <section class="mt-8 p-6 bg-alabaster rounded-xl border border-gray-200" aria-label="Author bio">
+          <h2 class="font-heading text-xl font-bold mb-2">Abdul Gaffar Mohammed, CFA</h2>
+          <p class="text-gray-600 leading-relaxed m-0">
+            Corporate Treasury Professional managing SAR 1bn+ banking facilities. Building decoded.finance to provide independent, rigorous analysis of Saudi capital markets.
+          </p>
+        </section>
+
+        <div class="mt-8">
+          <a href="/blog" class="btn-secondary text-sm py-2 px-4">← All Posts</a>
+        </div>
       </div>
     </div>
   </article>

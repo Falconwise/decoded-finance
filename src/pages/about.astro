@@ -1,56 +1,115 @@
----
-import Layout from '../layouts/Layout.astro';
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<Layout title="About - decoded.finance">
-  <div class="container mx-auto px-4 py-16 max-w-4xl">
+<BaseLayout
+  title="About"
+  description="Abdul Gaffar Mohammed, CFA â€” Corporate Finance Professional and Equity Research Analyst building decoded.finance for Saudi capital markets."
+>
+  <!-- Hero -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="max-w-4xl mx-auto">
+        <p class="label text-copper mb-6">About</p>
 
-    <!-- Profile Section -->
-    <div class="mb-12 flex flex-col md:flex-row items-center md:items-start gap-8">
-      <img 
-        src="/images/abdul-gaffar-profile.jpg" 
-        alt="Abdul Gaffar Mohammed" 
-        class="w-48 h-48 rounded-full object-cover shadow-lg"
-      />
-      <div class="flex-1">
-        <h1 class="text-4xl font-bold mb-4">About decoded.finance</h1>
+        <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+          <!-- Profile Picture -->
+          <div class="flex-shrink-0 mx-auto md:mx-0">
+            <div class="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-lg ring-4 ring-sage/10">
+              <img
+                src="/images/abdul-gaffar-profile.png"
+                alt="Abdul Gaffar Mohammed, CFA"
+                class="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="flex-1">
+            <h1 class="mb-2">Abdul Gaffar Mohammed, CFA</h1>
+            <p class="text-lg text-gray-500 mb-6">Corporate Finance Professional & Equity Research Analyst</p>
+
+            <div class="prose">
+              <p>
+                I'm a CFA charterholder and corporate treasury professional with experience managing SAR 1bn+ banking facilities and executing SAR 2bn project financing deals. My expertise spans equity research, valuation, corporate finance, and strategic decision-making in Saudi capital markets.
+              </p>
+              <p>
+                I built <strong>decoded.finance</strong> to provide independent, rigorous analysis of Saudi IPOs and corporate finance topics. The platform serves as a resource for finance professionals, investors, and decision-makers who want institutional-quality research without the bias.
+              </p>
+              <p>
+                My approach is simple: numbers-driven analysis, practical frameworks, and no fluff. Every case study and blog post is designed to be immediately useful â€” whether you're a CFO evaluating an IPO, an investor analyzing a listing, or a student building your financial toolkit.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- Main Content -->
-    <div class="prose prose-lg max-w-none">
-      <p class="text-xl text-gray-700 mb-8">
-        decoded.finance is a research platform that tracks Saudi IPOs and publishes structured case studies on pricing, fundamentals, and post listing performance.
-      </p>
-
-      <p class="text-lg text-gray-700 mb-8">
-        The goal is simple: make IPO analysis repeatable. Each company is reviewed using the same template, the same definitions, and clearly stated assumptions.
-      </p>
-
-      <h2 class="text-2xl font-bold mt-12 mb-4">What you will find here</h2>
-      <ul class="space-y-2 text-gray-700">
-        <li>A Saudi IPO tracker with searchable metrics and performance history</li>
-        <li>Case studies that break down the business, valuation logic, and key risks</li>
-        <li>Practical corporate finance frameworks that translate into decision memos and models</li>
-      </ul>
-
-      <h2 class="text-2xl font-bold mt-12 mb-4">How the analysis is done</h2>
-      <ul class="space-y-2 text-gray-700">
-        <li>Inputs are taken from public sources such as prospectuses, exchange disclosures, and company filings</li>
-        <li>Performance metrics follow consistent definitions across companies</li>
-        <li>When a number is uncertain or unavailable, it is flagged rather than guessed</li>
-        <li>Corrections are made when errors are found, with an updated date shown</li>
-      </ul>
-
-      <h2 class="text-2xl font-bold mt-12 mb-4">About the author</h2>
-      <p class="text-lg text-gray-700">
-        Abdul Gaffar Mohammed, CFA, works in corporate finance and treasury in Saudi Arabia, focused on capital structure, financing, and valuation driven decision making.
-      </p>
-
-      <h2 class="text-2xl font-bold mt-12 mb-4">Important note</h2>
-      <p class="text-lg text-gray-700">
-        decoded.finance is research and education. It is not investment advice.
-      </p>
+  <!-- Credentials -->
+  <section class="section bg-alabaster">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="mb-6">Credentials & Experience</h2>
+        <div class="grid sm:grid-cols-3 gap-6">
+          <div class="card text-center py-6">
+            <span class="font-data text-2xl font-bold text-sage block mb-2">CFA</span>
+            <span class="text-sm text-gray-500">Chartered Financial Analyst</span>
+          </div>
+          <div class="card text-center py-6">
+            <span class="font-data text-2xl font-bold text-sage block mb-2">SAR 2B+</span>
+            <span class="text-sm text-gray-500">Project Financing Executed</span>
+          </div>
+          <div class="card text-center py-6">
+            <span class="font-data text-2xl font-bold text-sage block mb-2">SAR 1B+</span>
+            <span class="text-sm text-gray-500">Banking Facilities Managed</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</Layout>
+  </section>
+
+  <!-- Focus Areas -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="mb-8">Focus Areas</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div>
+            <h3 class="text-lg mb-2">IPO Analysis</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Deep-dive case studies, valuation frameworks, and market-structure analysis for Saudi IPOs.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg mb-2">Corporate Finance</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Practical frameworks on capital structure, treasury strategy, working capital, and risk.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg mb-2">Financial Education</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Educational notes designed to improve decision quality for finance professionals and learners.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sage">
+    <div class="container">
+      <div class="max-w-xl mx-auto text-center text-white">
+        <h2 class="text-white mb-3">Connect on LinkedIn</h2>
+        <p class="opacity-90 mb-6">
+          For professional updates and discussion, connect with me on LinkedIn.
+        </p>
+        <a href="https://www.linkedin.com/in/abdulgaffarcfa/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:opacity-90 transition-opacity">
+          Open LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

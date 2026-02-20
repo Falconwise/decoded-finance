@@ -85,6 +85,13 @@ const { Content } = await study.render();
         <Content />
       </div>
 
+      <!-- Case Study Disclaimer -->
+      <div class="max-w-3xl mx-auto mt-10 p-4 bg-alabaster border border-gray-200 rounded-lg">
+        <p class="text-xs text-gray-600 m-0 leading-relaxed">
+          Case studies on decoded.finance are scenario-based learning materials built from public information, assumptions, and modelled estimates. They may contain simplifications and are not intended as forecasts, guarantees, or advisory opinions. Any references to companies, securities, sectors, or macro factors are for educational context only.
+        </p>
+      </div>
+
       <!-- Tags -->
       <div class="max-w-3xl mx-auto mt-10 pt-6 border-t border-gray-200">
         <h4 class="label text-gray-400 mb-3">Tags</h4>
@@ -114,6 +121,9 @@ const { Content } = await study.render();
           <input type="email" placeholder="your@email.com" required class="flex-1 px-4 py-3 rounded text-graphite text-sm" />
           <button type="submit" class="px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:opacity-90 transition-opacity">Subscribe</button>
         </form>
+        <p class="text-xs mt-3 opacity-80">
+          By submitting this form, you agree to receive occasional educational updates from decoded.finance. You can unsubscribe at any time.
+        </p>
       </div>
     </div>
   </section>
