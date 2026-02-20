@@ -343,6 +343,29 @@ h3 { font-size: 1.5rem; }
   padding: var(--space-xl) 0;
 }
 
+.page-shell {
+  background: var(--bg-alabaster);
+}
+
+.page-intro {
+  max-width: 48rem;
+  margin-bottom: 2.5rem;
+}
+
+.page-kicker {
+  margin-bottom: 0.5rem;
+}
+
+.page-title {
+  margin-bottom: 0.75rem;
+}
+
+.page-summary {
+  max-width: 42rem;
+  color: #4b5563;
+  line-height: 1.75;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -389,6 +412,7 @@ h3 { font-size: 1.5rem; }
 .mobile-nav-panel {
   border-top: 1px solid #e5e7eb;
   background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
 }
 
 .mobile-nav-link {
@@ -397,10 +421,18 @@ h3 { font-size: 1.5rem; }
   color: #4b5563;
   text-decoration: none;
   font-size: 0.95rem;
+  border-radius: 4px;
 }
 
 .mobile-nav-link:hover {
   color: var(--primary-sage);
+}
+
+.mobile-nav-link:focus-visible,
+.mobile-menu-button:focus-visible,
+.mobile-nav-panel .btn-primary:focus-visible {
+  outline: 2px solid var(--primary-sage);
+  outline-offset: 2px;
 }
 
 body.mobile-nav-open {

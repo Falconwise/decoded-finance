@@ -13,15 +13,26 @@ const sortedStudies = caseStudies.sort((a, b) =>
   title="IPO Case Studies"
   description="In-depth analysis of Saudi Arabian IPOs with financial modeling and valuation. Professional equity research by Abdul Gaffar Mohammed, CFA."
 >
-  <section class="section bg-alabaster">
+  <section class="section bg-alabaster page-shell">
     <div class="container">
-      <div class="mb-10">
-        <p class="label text-copper mb-2">Deep Analysis</p>
-        <h1 class="mb-3">IPO Case Studies</h1>
-        <p class="text-gray-600 max-w-2xl">
-          In-depth analysis of Saudi Arabian IPOs with financial modeling, valuation frameworks, and investment recommendations.
+      <header class="page-intro">
+        <p class="label text-copper page-kicker">Deep Analysis</p>
+        <h1 class="page-title">IPO Case Studies</h1>
+        <p class="page-summary">
+          In-depth analysis of Saudi Arabian IPOs with financial modeling, valuation frameworks, and scenario-based research. You can cross-reference market-level updates in the <a href="/ipo-tracker" class="text-copper no-underline hover:underline">IPO Tracker</a> and methodology notes in the <a href="/blog" class="text-copper no-underline hover:underline">Blog</a>.
         </p>
-      </div>
+      </header>
+
+      {sortedStudies.length < 3 && (
+        <div class="mb-6 p-4 bg-white border border-gray-200 rounded-lg">
+          <p class="text-sm text-gray-600 m-0">
+            This library is being expanded. New case studies are added in publishing waves after quality review.
+          </p>
+          <p class="text-xs text-gray-500 mt-2 mb-0">
+            Current entries are educational scenario analyses and should not be treated as investment recommendations.
+          </p>
+        </div>
+      )}
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedStudies.map(study => (
@@ -41,7 +52,7 @@ const sortedStudies = caseStudies.sort((a, b) =>
                 <span>Valuation: SAR {(study.data.valuation_sar / 1_000_000_000).toFixed(1)}B</span>
               )}
               {study.data.target_price && (
-                <span>Target: SAR {study.data.target_price.toFixed(2)}</span>
+                <span>Model Range Upper: SAR {study.data.target_price.toFixed(2)}</span>
               )}
             </div>
             <div class="flex items-center justify-between mt-auto">

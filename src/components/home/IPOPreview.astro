@@ -9,8 +9,8 @@ const recentIPOs = getRecentIPOs(4);
   <div class="container">
     <div class="flex items-center justify-between mb-8">
       <div>
-        <p class="label text-copper mb-2">Live Data</p>
-        <h2>Saudi IPO Tracker</h2>
+        <p class="label text-copper page-kicker">Live Data</p>
+        <h2 class="page-title">Saudi IPO Tracker</h2>
       </div>
       <a href="/ipo-tracker" class="hidden sm:inline-flex btn-secondary text-sm py-2 px-4">View Full Tracker</a>
     </div>
@@ -39,8 +39,8 @@ const recentIPOs = getRecentIPOs(4);
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {recentIPOs.map(ipo => (
         <div class="card">
-          <div class="flex items-center justify-between mb-3">
-            <span class="badge badge-sage">{ipo.sector}</span>
+          <div class="flex items-start justify-between gap-2 mb-3">
+            <span class="badge badge-sage normal-case tracking-normal whitespace-normal leading-tight">{ipo.sector}</span>
             <span class={`font-data text-sm font-bold ${ipo.return_from_ipo >= 0 ? 'performance-positive' : 'performance-negative'}`}>
               {ipo.return_from_ipo > 0 ? '+' : ''}{ipo.return_from_ipo}%
             </span>
@@ -61,6 +61,12 @@ const recentIPOs = getRecentIPOs(4);
 
     <div class="text-center mt-8 sm:hidden">
       <a href="/ipo-tracker" class="btn-primary text-sm py-2 px-6">View Full Tracker</a>
+    </div>
+
+    <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
+      <p class="text-xs text-gray-600 m-0 leading-relaxed">
+        Data shown is an informational snapshot. For full methodology, source details, and latest as-of date, use the full IPO Tracker page.
+      </p>
     </div>
   </div>
 </section>

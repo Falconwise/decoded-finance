@@ -7,10 +7,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Abdul Gaffar Mohammed, CFA — Corporate Finance Professional and Equity Research Analyst building decoded.finance for Saudi capital markets."
 >
   <!-- Hero -->
-  <section class="section bg-white">
+  <section class="section bg-white page-shell">
     <div class="container">
       <div class="max-w-4xl mx-auto">
-        <p class="label text-copper mb-6">About</p>
+        <div class="page-intro">
+          <p class="label text-copper page-kicker">About</p>
+          <h1 class="page-title">Abdul Gaffar Mohammed, CFA</h1>
+          <p class="page-summary">Independent Saudi capital-markets research grounded in valuation discipline, treasury experience, and practical decision frameworks.</p>
+        </div>
 
         <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
           <!-- Profile Picture -->
@@ -27,7 +31,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <!-- Bio -->
           <div class="flex-1">
-            <h1 class="mb-2">Abdul Gaffar Mohammed, CFA</h1>
             <p class="text-lg text-gray-500 mb-6">Corporate Finance Professional & Equity Research Analyst</p>
 
             <div class="prose">
@@ -35,10 +38,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 I'm a CFA charterholder and corporate treasury professional with experience managing SAR 1bn+ banking facilities and executing SAR 2bn project financing deals. My expertise spans equity research, valuation, corporate finance, and strategic decision-making in Saudi capital markets.
               </p>
               <p>
-                I built <strong>decoded.finance</strong> to provide independent, rigorous analysis of Saudi IPOs and corporate finance topics. The platform serves as a resource for finance professionals, investors, and decision-makers who want institutional-quality research without the bias.
+                I built <strong>decoded.finance</strong> to publish independent analysis of Saudi IPOs and corporate finance topics. The goal is straightforward: clear, evidence-based writing for professionals who value transparent assumptions.
               </p>
               <p>
-                My approach is simple: numbers-driven analysis, practical frameworks, and no fluff. Every case study and blog post is designed to be immediately useful — whether you're a CFO evaluating an IPO, an investor analyzing a listing, or a student building your financial toolkit.
+                My approach is simple: numbers-driven analysis, practical frameworks, and clear communication. Each case study and blog post is written to support better financial judgment in real-world contexts.
               </p>
             </div>
           </div>
@@ -95,6 +98,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alabaster">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="mb-4">Explore the Research</h2>
+        <p class="text-gray-600 mb-5 leading-relaxed">
+          If you're new to the site, start with the <a href="/ipo-tracker" class="text-copper font-semibold no-underline hover:underline">IPO Tracker</a> for market context, then move to <a href="/case-studies" class="text-copper font-semibold no-underline hover:underline">Case Studies</a> and the <a href="/blog" class="text-copper font-semibold no-underline hover:underline">Blog</a> for deeper frameworks and commentary.
+        </p>
       </div>
     </div>
   </section>

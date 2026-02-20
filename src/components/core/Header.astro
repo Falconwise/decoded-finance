@@ -69,15 +69,27 @@ const navLinks = [
   const toggle = document.querySelector('[data-mobile-nav-toggle]');
   const panel = document.querySelector('[data-mobile-nav]');
 
-  if (toggle && panel) {
-    const setOpen = (isOpen) => {
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-      panel.hidden = !isOpen;
-      document.body.classList.toggle('mobile-nav-open', isOpen);
+  if (toggle instanceof HTMLButtonElement && panel instanceof HTMLElement) {
+    const closeNav = (shouldFocusToggle = true) => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+      panel.hidden = true;
+      document.body.classList.remove('mobile-nav-open');
+      if (shouldFocusToggle) toggle.focus();
     };
 
-    setOpen(false);
+    const openNav = () => {
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close navigation menu');
+      panel.hidden = false;
+      document.body.classList.add('mobile-nav-open');
+      const firstLink = panel.querySelector('a');
+      if (firstLink instanceof HTMLElement) firstLink.focus();
+    };
+
+    const setOpen = (isOpen, shouldFocusToggle = true) => (isOpen ? openNav() : closeNav(shouldFocusToggle));
+
+    setOpen(false, false);
 
     toggle.addEventListener('click', () => {
       const isOpen = toggle.getAttribute('aria-expanded') === 'true';
@@ -85,12 +97,27 @@ const navLinks = [
     });
 
     panel.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
+      link.addEventListener('click', () => setOpen(false, false));
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        closeNav();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      if (!isOpen) return;
+      const target = event.target;
+      if (target instanceof Node && !panel.contains(target) && !toggle.contains(target)) {
+        setOpen(false, false);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false, false);
       }
     });
   }
