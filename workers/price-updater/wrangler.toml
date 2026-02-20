@@ -21,7 +21,7 @@ crons = ["10 12 * * *"]
 # Copy the printed `id` and paste it below, replacing the placeholder.
 [[kv_namespaces]]
 binding = "IPO_PRICES"
-id     = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id     = "9d31b0736f704f8793d9f804a385399a"
 # Uncomment the line below to also create a preview namespace for `wrangler dev`:
 # preview_id = "REPLACE_WITH_YOUR_KV_PREVIEW_NAMESPACE_ID"
 
