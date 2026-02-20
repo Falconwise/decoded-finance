@@ -117,8 +117,14 @@ const { Content } = await study.render();
       <div class="max-w-xl mx-auto text-center text-white">
         <h2 class="text-white mb-3">Get More Analysis Like This</h2>
         <p class="opacity-90 mb-6">Join finance professionals receiving our Saudi IPO insights.</p>
-        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <input type="email" placeholder="your@email.com" required class="flex-1 px-4 py-3 rounded text-graphite text-sm" />
+        <form
+          action="https://formspree.io/f/xbdaavoa"
+          method="POST"
+          class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        >
+          <input type="hidden" name="_subject" value="New subscriber — decoded.finance (case study)" />
+          <input type="hidden" name="_next" value="https://decoded.finance/?subscribed=true" />
+          <input type="email" name="email" placeholder="your@email.com" required class="flex-1 px-4 py-3 rounded text-graphite text-sm" />
           <button type="submit" class="px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:opacity-90 transition-opacity">Subscribe</button>
         </form>
         <p class="text-xs mt-3 opacity-80">
