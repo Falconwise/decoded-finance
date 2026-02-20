@@ -1,0 +1,47 @@
+# ============================================================
+# decoded.finance — Cloudflare Worker: IPO Price Updater
+# ============================================================
+
+name = "decoded-finance-price-updater"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# ---- Cron Schedule ----
+# Runs daily at 12:10 UTC = 3:10 pm Riyadh time (AST, UTC+3)
+# Saudi Tadawul market closes at 3:00 pm — price is updated 10 min after close
+[triggers]
+crons = ["10 12 * * *"]
+
+# ---- KV Namespace ----
+# Stores the latest price snapshot (up to 48h TTL)
+#
+# SETUP (one-time):
+#   npx wrangler kv namespace create IPO_PRICES
+#
+# Copy the printed `id` and paste it below, replacing the placeholder.
+[[kv_namespaces]]
+binding = "IPO_PRICES"
+id     = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+# Uncomment the line below to also create a preview namespace for `wrangler dev`:
+# preview_id = "REPLACE_WITH_YOUR_KV_PREVIEW_NAMESPACE_ID"
+
+# ---- Secrets (never commit plain-text values) ----
+#
+# PAGES_DEPLOY_HOOK — Cloudflare Pages deploy hook URL
+#   The Worker calls this URL (POST) after each cron run to trigger a static
+#   site rebuild, so the latest prices are baked into the HTML.
+#
+#   Get the URL:
+#     Cloudflare Dashboard → Pages → decoded-finance
+#     → Settings → Builds & Deployments → Deploy Hooks → "Add deploy hook"
+#     Name it "price-updater-cron" and copy the generated URL.
+#
+#   Set the secret:
+#     npx wrangler secret put PAGES_DEPLOY_HOOK
+#     (paste the hook URL when prompted — it is stored encrypted by Cloudflare)
+
+# ---- Deployment ----
+# Deploy:  npx wrangler deploy   (from this directory)
+# Logs:    npx wrangler tail
+# Local:   npx wrangler dev      (test HTTP handler locally)
+# Cron:    npx wrangler dev --test-scheduled  (simulate the cron trigger)
