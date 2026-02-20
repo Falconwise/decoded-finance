@@ -30,7 +30,7 @@ const latestPosts = featuredPost
     <div class="container">
       <header class="page-intro">
         <p class="label text-copper page-kicker">Insights</p>
-        <h1 class="page-title">Research Journal</h1>
+        <h1 class="page-title">Blog</h1>
         <p class="page-summary text-lg">
           Long-form analysis on valuation, treasury, and Saudi capital markets — written for decision-makers who value clarity over noise. For listing-level data, use the <a href="/ipo-tracker" class="text-copper no-underline hover:underline">IPO Tracker</a>; for applied examples, see <a href="/case-studies" class="text-copper no-underline hover:underline">Case Studies</a>.
         </p>
@@ -76,7 +76,7 @@ const latestPosts = featuredPost
                   <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="badge bg-sage-50 text-sage-700 no-underline hover:bg-sage-100 transition-colors">{tag}</a>
                 ))}
               </div>
-              <a href={`/blog/${featuredPost.slug}`} class="btn-secondary">Read featured analysis →</a>
+              <a href={`/blog/${featuredPost.slug}`} class="btn-secondary">Read →</a>
             </article>
           </section>
 
@@ -100,7 +100,7 @@ const latestPosts = featuredPost
                     </div>
                     <div class="md:text-right shrink-0">
                       <p class="meta mb-3">{formatDate(post.data.publishedDate)} · {post.data.reading_time} min</p>
-                      <a href={`/blog/${post.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">Read article →</a>
+                      <a href={`/blog/${post.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">Read →</a>
                     </div>
                   </div>
                 </article>
