@@ -42,7 +42,7 @@ export interface IPODataset {
 
 export const ipoData: IPODataset = {
     metadata: {
-        last_updated: "2026-02-13",
+        last_updated: "2026-02-20",
         total_ipos: 19,
         data_source: "Abdul Gaffar Mohammed, CFA - decoded.finance",
         description: "Comprehensive Saudi Arabia IPO database (2020-2025) with performance tracking"
@@ -85,7 +85,7 @@ export const ipoData: IPODataset = {
             id: "umm-al-qura-for-development-and-construction-company-2024",
             company_name: "Umm Al Qura Development",
             company_name_ar: "شركة أم القرى للتطوير والإعمار",
-            symbol: "4162",
+            symbol: "4325",
             sector: "Real Estate",
             listing_date: "2024-03-11",
             offer_price: 74.79,
@@ -130,10 +130,10 @@ export const ipoData: IPODataset = {
             id: "flynas-airlines-2024",
             company_name: "Flynas Airlines",
             company_name_ar: "طيران ناس",
-            symbol: "4095",
+            symbol: "4264",
             sector: "Consumer Discretionary",
-            listing_date: "2024-06-22",
-            offer_price: 66.47,
+            listing_date: "2025-06-18",
+            offer_price: 80,
             market_cap_sar: 5800000000,
             market_cap_display: "SAR 5.8B",
             return_from_ipo: 75.6,
@@ -265,7 +265,7 @@ export const ipoData: IPODataset = {
             id: "cherry-trading-company-2025",
             company_name: "Cherry Trading",
             company_name_ar: "شركة شيري للتجارة",
-            symbol: "4199",
+            symbol: "4265",
             sector: "Consumer Discretionary",
             listing_date: "2025-01-10",
             offer_price: 12.36,

@@ -35,14 +35,27 @@ import IPOPreview from '../components/home/IPOPreview.astro';
         <p class="text-sage-100 mb-6 opacity-90">
           Join finance professionals receiving our weekly Saudi IPO insights and market analysis.
         </p>
-        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <form
+          action="https://formspree.io/f/xbdaavoa"
+          method="POST"
+          class="flex flex-col gap-3 max-w-sm mx-auto"
+        >
+          <input type="hidden" name="_subject" value="New subscriber — decoded.finance" />
+          <input type="hidden" name="_next" value="https://decoded.finance/?subscribed=true" />
+          <input
+            type="text"
+            name="name"
+            placeholder="Your name (optional)"
+            class="px-4 py-3 rounded text-graphite text-sm border-0 focus:outline-none focus:ring-2 focus:ring-copper"
+          />
           <input
             type="email"
+            name="email"
             placeholder="your@email.com"
             required
-            class="flex-1 px-4 py-3 rounded text-graphite text-sm border-0 focus:outline-none focus:ring-2 focus:ring-copper"
+            class="px-4 py-3 rounded text-graphite text-sm border-0 focus:outline-none focus:ring-2 focus:ring-copper"
           />
-          <button type="submit" class="px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:bg-copper-600 transition-colors">
+          <button type="submit" class="px-6 py-3 bg-copper text-white rounded font-bold text-sm hover:bg-copper-600 transition-colors w-full">
             Subscribe
           </button>
         </form>

@@ -30,7 +30,7 @@ const latestPosts = featuredPost
     <div class="container">
       <header class="page-intro">
         <p class="label text-copper page-kicker">Insights</p>
-        <h1 class="page-title">Research Journal</h1>
+        <h1 class="page-title">Blog</h1>
         <p class="page-summary text-lg">
           Long-form analysis on valuation, treasury, and Saudi capital markets — written for decision-makers who value clarity over noise. For listing-level data, use the <a href="/ipo-tracker" class="text-copper no-underline hover:underline">IPO Tracker</a>; for applied examples, see <a href="/case-studies" class="text-copper no-underline hover:underline">Case Studies</a>.
         </p>
@@ -57,64 +57,108 @@ const latestPosts = featuredPost
         </p>
       )}
 
-      {featuredPost ? (
-        <>
-          <section class="mb-12" aria-label="Featured article">
-            <article class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm">
-              <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="badge badge-copper">Featured</span>
-                <span class="meta">{formatDate(featuredPost.data.publishedDate)} · {featuredPost.data.reading_time} min read</span>
-              </div>
-              <h2 class="text-2xl md:text-3xl mb-3 leading-tight">
-                <a href={`/blog/${featuredPost.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
-                  {featuredPost.data.title}
-                </a>
-              </h2>
-              <p class="text-gray-600 max-w-3xl leading-relaxed mb-5">{featuredPost.data.description}</p>
-              <div class="flex flex-wrap gap-2 mb-6">
-                {featuredPost.data.tags.map((tag) => (
-                  <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="badge bg-sage-50 text-sage-700 no-underline hover:bg-sage-100 transition-colors">{tag}</a>
-                ))}
-              </div>
-              <a href={`/blog/${featuredPost.slug}`} class="btn-secondary">Read featured analysis →</a>
-            </article>
-          </section>
-
-          {latestPosts.length > 0 && (
-            <section aria-label="Latest articles" class="space-y-4">
-              {latestPosts.map((post) => (
-                <article class="bg-white border border-gray-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                    <div class="max-w-3xl">
-                      <h3 class="text-xl mb-2 leading-snug">
-                        <a href={`/blog/${post.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
-                          {post.data.title}
-                        </a>
-                      </h3>
-                      <p class="text-gray-600 leading-relaxed mb-4">{post.data.description}</p>
-                      <div class="flex flex-wrap gap-2">
-                        {post.data.tags.slice(0, 4).map((tag) => (
-                          <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="text-xs uppercase tracking-wide text-gray-500 bg-gray-50 px-2 py-1 rounded no-underline hover:bg-sage-50 hover:text-sage-700 transition-colors">{tag}</a>
-                        ))}
-                      </div>
-                    </div>
-                    <div class="md:text-right shrink-0">
-                      <p class="meta mb-3">{formatDate(post.data.publishedDate)} · {post.data.reading_time} min</p>
-                      <a href={`/blog/${post.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">Read article →</a>
-                    </div>
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start">
+        <main>
+          {featuredPost ? (
+            <>
+              <section class="mb-12" aria-label="Featured article">
+                <article class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm">
+                  <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="badge badge-copper">Featured</span>
+                    <span class="meta">{formatDate(featuredPost.data.publishedDate)} · {featuredPost.data.reading_time} min read</span>
                   </div>
+                  <h2 class="text-2xl md:text-3xl mb-3 leading-tight">
+                    <a href={`/blog/${featuredPost.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
+                      {featuredPost.data.title}
+                    </a>
+                  </h2>
+                  <p class="text-gray-600 max-w-3xl leading-relaxed mb-5">{featuredPost.data.description}</p>
+                  <div class="flex flex-wrap gap-2 mb-6">
+                    {featuredPost.data.tags.map((tag) => (
+                      <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="badge bg-sage-50 text-sage-700 no-underline hover:bg-sage-100 transition-colors">{tag}</a>
+                    ))}
+                  </div>
+                  <a href={`/blog/${featuredPost.slug}`} class="btn-secondary">Read →</a>
                 </article>
-              ))}
+              </section>
+
+              {latestPosts.length > 0 && (
+                <section aria-label="Latest articles" class="space-y-4">
+                  {latestPosts.map((post) => (
+                    <article class="bg-white border border-gray-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+                      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div class="max-w-3xl">
+                          <h3 class="text-xl mb-2 leading-snug">
+                            <a href={`/blog/${post.slug}`} class="text-graphite no-underline hover:text-sage transition-colors">
+                              {post.data.title}
+                            </a>
+                          </h3>
+                          <p class="text-gray-600 leading-relaxed mb-4">{post.data.description}</p>
+                          <div class="flex flex-wrap gap-2">
+                            {post.data.tags.slice(0, 4).map((tag) => (
+                              <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="text-xs uppercase tracking-wide text-gray-500 bg-gray-50 px-2 py-1 rounded no-underline hover:bg-sage-50 hover:text-sage-700 transition-colors">{tag}</a>
+                            ))}
+                          </div>
+                        </div>
+                        <div class="md:text-right shrink-0">
+                          <p class="meta mb-3">{formatDate(post.data.publishedDate)} · {post.data.reading_time} min</p>
+                          <a href={`/blog/${post.slug}`} class="text-copper font-bold text-sm no-underline hover:underline">Read →</a>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </section>
+              )}
+            </>
+          ) : (
+            <section class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm" aria-live="polite">
+              <h2 class="text-2xl mb-3">No posts found</h2>
+              <p class="text-gray-600 mb-4">There are no articles for this topic yet.</p>
+              <a href="/blog" class="btn-secondary">Browse all topics</a>
             </section>
           )}
-        </>
-      ) : (
-        <section class="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm" aria-live="polite">
-          <h2 class="text-2xl mb-3">No posts found</h2>
-          <p class="text-gray-600 mb-4">There are no articles for this topic yet.</p>
-          <a href="/blog" class="btn-secondary">Browse all topics</a>
-        </section>
-      )}
+        </main>
+
+        <aside class="sticky top-8 space-y-6">
+          <div class="bg-sage rounded-xl p-6 text-white">
+            <p class="label text-sage-100 mb-2">Newsletter</p>
+            <h3 class="text-white font-bold mb-2 text-lg leading-snug">Get IPO Analysis Delivered</h3>
+            <p class="text-sage-100 text-sm opacity-90 mb-5 leading-relaxed">
+              Join finance professionals receiving Saudi IPO insights and market analysis.
+            </p>
+            <form
+              action="https://formspree.io/f/xbdaavoa"
+              method="POST"
+              class="flex flex-col gap-3"
+            >
+              <input type="hidden" name="_subject" value="New subscriber — decoded.finance (blog)" />
+              <input type="hidden" name="_next" value="https://decoded.finance/?subscribed=true" />
+              <input
+                type="text"
+                name="name"
+                placeholder="Your name (optional)"
+                class="px-3 py-2 rounded text-graphite text-sm border-0 focus:outline-none focus:ring-2 focus:ring-copper"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                required
+                class="px-3 py-2 rounded text-graphite text-sm border-0 focus:outline-none focus:ring-2 focus:ring-copper"
+              />
+              <button
+                type="submit"
+                class="px-4 py-2 bg-copper text-white rounded font-bold text-sm hover:bg-copper-600 transition-colors w-full"
+              >
+                Subscribe →
+              </button>
+            </form>
+            <p class="text-xs mt-3 opacity-70 leading-snug">
+              Occasional educational updates. Unsubscribe any time.
+            </p>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 </BaseLayout>
