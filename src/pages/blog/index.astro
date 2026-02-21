@@ -44,7 +44,7 @@ const latestPosts = featuredPost
       </header>
 
       <section aria-label="Browse by topic" class="mb-8 md:mb-10">
-        <div class="flex flex-wrap gap-2">
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           <a href="/blog" class={`topic-chip ${!activeTopic ? 'is-active' : ''}`}>All Topics</a>
           {allTags.map((tag) => (
             <a
