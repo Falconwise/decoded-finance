@@ -1,0 +1,60 @@
+---
+title: "Cost of Debt in Saudi Valuation: SAIBOR, Sukuk Benchmarks, and Synthetic Ratings"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 2
+tags: ["valuation", "WACC", "saudi-markets", "cost-of-debt", "sukuk"]
+description: "A practical guide to estimating cost of debt in Saudi valuations using SAIBOR-linked pricing, sukuk benchmarks, and synthetic ratings based on credit ratios."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A simple table or ladder diagram showing how SAIBOR + spread builds up to an observable cost of debt, with a synthetic rating as an alternative path */}
+
+Cost of debt (K_d) should represent the company's **current marginal borrowing cost** — the rate it would pay today on a new facility or instrument, not the blended historical average on its existing debt book.
+
+In Saudi practice, corporate debt is typically priced as SAIBOR plus a credit spread for bank facilities, or expressed as a yield or spread in the sukuk market.
+
+---
+
+## Approach 1: Facility Pricing (SAIBOR + Spread)
+
+When a bank facility is priced as a floating rate over SAIBOR:
+
+**K_d ≈ SAIBOR + Credit Spread**
+
+Include commitment fees or recurring facility charges only if they are genuinely debt-like in nature. Keep the benchmark rate current — use the relevant SAIBOR tenor at the valuation date.
+
+---
+
+## Approach 2: Sukuk Market Pricing
+
+If the issuer has publicly priced sukuk, use the yield to maturity or the spread over a benchmark at the time of pricing. Adjust for seniority differences and tenor mismatches versus the valuation model horizon.
+
+Label the rate as indicative unless you are sourcing live market pricing at the valuation date.
+
+---
+
+## Approach 3: Synthetic Rating
+
+When observable pricing is not available, derive a spread from credit ratios and map to a rating band:
+
+**K_d ≈ R_f + Spread(synthetic)**
+
+Use a spread range appropriate to the implied rating band, and show sensitivity. Presenting a single synthetic spread without a range implies false precision.
+
+---
+
+## Tax and Zakat: The Critical Adjustment
+
+How K_d feeds into WACC depends on the entity's tax position:
+
+- **Income tax payer** → use after-tax cost of debt: K_d × (1 − t)
+- **Zakat payer** → use pre-tax K_d as the conservative default, unless a specific interest tax shield is clearly documented
+
+This distinction matters. Failing to adjust for Zakat is a common source of WACC understatement in Saudi models. See the companion article on [Taxes and Zakat in WACC](/blog/saudi-wacc-taxes-zakat) for the full treatment.
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

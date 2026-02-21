@@ -1,0 +1,81 @@
+---
+title: "Equity Risk Premium for Saudi Valuation: Global Base, Country Risk, and Practical Adjustments"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 3
+tags: ["valuation", "WACC", "saudi-markets", "equity-risk-premium", "country-risk"]
+description: "A practical framework to construct an equity risk premium for Saudi valuations using a global base and a transparent country-risk adjustment when appropriate."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A layered bar chart showing ERP decomposition — global base, country risk premium, and weighted effective ERP */}
+
+Equity Risk Premium (ERP) is one of the most sensitive inputs in any valuation. Small changes compound through the model and can move intrinsic value materially.
+
+For Saudi valuations, the goal is a transparent ERP that has a global anchor and reflects domestic country exposure only when the business economics justify it — not as a blanket add-on.
+
+---
+
+## Step 1: Start with a Global Base ERP
+
+Use a mature market ERP as your starting point. This is appropriate when cash flows are diversified globally or the company's risk profile is comparable to global peers.
+
+Good sources include regularly updated implied ERP estimates from academic databases, as well as historical long-run equity risk premia from well-established markets.
+
+---
+
+## Step 2: Add a Country Risk Component When Domestic Exposure Is High
+
+If the business generates most of its cash flows in Saudi Arabia, you may add a country risk premium (CRP) derived from a sovereign spread:
+
+**CRP = CDS(KSA) × (σ_equity / σ_bond)**
+
+**ERP(Saudi) = ERP(global) + CRP**
+
+The equity-to-bond volatility ratio (σ_equity / σ_bond) scales the sovereign spread to reflect that equity is more volatile than bonds. A ratio in the range of 1.2–1.5 is commonly used in practice; document your choice.
+
+---
+
+## Step 3: Weight ERP by Revenue and Cash Flow Exposure
+
+For companies with mixed domestic and international exposure, a revenue-weighted ERP is often more accurate than applying a single country premium:
+
+**ERP(effective) = [w(Saudi) × ERP(Saudi)] + [(1 − w(Saudi)) × ERP(global)]**
+
+This approach is particularly useful for Saudi companies with meaningful GCC or international revenue.
+
+---
+
+## Step 4: Treat Concentration Risk as a Sensitivity, Not a Certainty
+
+If a business is highly concentrated in a small number of counterparties, customers, or projects, you can model a small additional premium as a sensitivity — for example, 0.5% to 1.5%. Keep it explicitly illustrative, sensitivity-tested, and documented. Do not present it as a precise fact.
+
+---
+
+## Illustrative Example
+
+| Input | Value |
+|-------|-------|
+| ERP (global base) | 5.5% |
+| CDS (KSA, 10-year) | 1.0% |
+| σ_equity / σ_bond | 1.5 |
+| **CRP** | **1.5%** |
+| **ERP (Saudi)** | **7.0%** |
+| Saudi revenue weight | 80% |
+| **ERP (effective)** | **(0.8 × 7.0%) + (0.2 × 5.5%) = 6.7%** |
+
+Always present ERP as a range and show valuation sensitivity across that range.
+
+---
+
+## Common Mistakes
+
+- **Double counting** — adding country risk in both the risk-free rate build-up and the ERP separately without documentation
+- **Applying Saudi CRP to globally diversified companies** — the premium belongs where the risk is earned
+- **Using a single ERP input without sensitivity** — given the inherent uncertainty in ERP estimation, a sensitivity range is essential
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

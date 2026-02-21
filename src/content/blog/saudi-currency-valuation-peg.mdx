@@ -1,0 +1,75 @@
+---
+title: "Currency and Valuation in KSA: Peg Consistency, Inflation Assumptions, and Tail-Risk Stress Testing"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 3
+tags: ["valuation", "saudi-markets", "currency", "macro", "risk-management"]
+description: "How to keep valuation models consistent with the SAR peg, handle inflation and translation cleanly, and run a conservative tail-risk stress test without making forecasts."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A clean diagram showing two parallel valuation paths — SAR model vs USD model — with arrows showing consistent inputs on each side and a conversion bridge between them */}
+
+Currency assumptions can quietly break an otherwise clean valuation. For Saudi companies, the SAR peg provides a stable modeling anchor for most corporate valuation work — but the key requirement is internal consistency, not just familiarity.
+
+This post provides a practical framework. It does not offer predictions about exchange rates or policy.
+
+---
+
+## The Peg as a Modeling Anchor
+
+For standard corporate valuation work, treat the SAR/USD peg as a stable base-case assumption. Deviation from this should be reserved for cases where there is a specific, documented reason to do otherwise — not as a reflexive caution flag.
+
+---
+
+## Inflation Consistency Rule
+
+If you model in SAR:
+- Terminal growth should be consistent with **SAR inflation** and real growth assumptions
+- Do not mix a USD risk-free rate with a SAR terminal growth narrative without making the conversion explicit
+
+If you model in USD:
+- Terminal growth should be **USD-consistent**
+- Discount rates must be USD-denominated
+
+The rule is simple: pick one currency for the model and make every input consistent with it.
+
+---
+
+## Valuing in USD vs SAR
+
+Both are defensible. What is not defensible is mixing:
+
+| Model Currency | Discount Rate | Terminal Growth | Final Output |
+|----------------|--------------|-----------------|--------------|
+| SAR | SAR-based WACC | SAR-consistent g | SAR equity value |
+| USD | USD-based WACC | USD-consistent g | USD equity value, then translate |
+
+If you translate a SAR model into USD at the end, the translation should use a consistent exchange rate assumption — typically the spot rate, with sensitivity.
+
+---
+
+## Tail-Risk Stress Test (Not a Forecast)
+
+A useful governance step is to run a stress scenario to understand downside sensitivity. This is not a prediction — it is a test of model resilience.
+
+Typical stress parameters:
+- WACC higher by 100–150 basis points
+- Credit spreads wider
+- ERP elevated
+- Margins under pressure (relevant for import-cost-sensitive businesses)
+- Working capital deterioration
+
+Present this as a named stress case, without attaching probability or timing. The purpose is to understand how much the valuation changes under plausible adverse conditions.
+
+---
+
+## Forward Points
+
+Foreign exchange forward points reflect interest rate differentials and funding conditions between two currencies. They can inform near-term translation assumptions in multi-currency models — but they should not drive long-term terminal value assumptions. That is a category error.
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

@@ -1,0 +1,134 @@
+---
+title: "WACC in Saudi Arabia: Zakat Treatment and Cost of Capital Mechanics"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 5
+tags: ["valuation", "WACC", "saudi-markets", "zakat", "tadawul"]
+description: "A practitioner-focused guide to building WACC for Saudi companies, including SAR risk-free rate, Zakat vs tax treatment, and integrity checks."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A clean diagram showing the WACC formula components — equity weight, cost of equity, debt weight, cost of debt — in a Saudi market context */}
+
+Saudi valuations often go wrong for one simple reason. Analysts import a textbook WACC and apply it to SAR cash flows without adjusting for local mechanics.
+
+This post lays out a practical, audit-friendly WACC workflow for Saudi companies. The goal is not a single perfect number — it's a WACC that is internally consistent, explainable to a CFO, and easy to sensitize.
+
+---
+
+## The Core Definition
+
+Weighted Average Cost of Capital is the blended required return demanded by all capital providers:
+
+**WACC = (w_e × K_e) + (w_d × K_d)**
+
+Where:
+- **w_e**, **w_d** are market value weights of equity and debt
+- **K_e** is cost of equity
+- **K_d** is cost of debt — after-tax only when a genuine tax shield exists
+
+---
+
+## Step-by-Step WACC Workflow for Saudi Companies
+
+### Step A — Pick the valuation currency first
+
+If your cash flows are in SAR, every WACC input must be SAR-consistent:
+- Risk-free rate must be SAR-based
+- Country risk adjustments must not be double-counted
+- Inflation and growth assumptions should match the currency
+
+If you are valuing in USD, that is also defensible — but then cash flows, discount rate, and terminal growth must all be USD-consistent. Do not mix the two.
+
+### Step B — Estimate the SAR risk-free rate
+
+Two defensible approaches:
+
+1. **Direct SAR government yield** — use a long-tenor SAR government bond yield when a reliable, liquid benchmark is available.
+2. **Peg-consistent build-up** — start with a USD risk-free rate and add a Saudi sovereign spread proxy:
+
+**R_f(SAR) = R_f(USD) + CDS(KSA)**
+
+Use the same tenor for both components. Label inputs as illustrative if you are not using a live market feed.
+
+### Step C — Build cost of equity using CAPM, then sanity-check it
+
+Baseline CAPM:
+
+**K_e = R_f + (β × ERP)**
+
+Document clearly:
+- Risk-free rate source and tenor
+- Beta method (regression beta, adjusted beta, or bottom-up beta)
+- ERP construction — global base, plus any country risk component if used
+
+**Useful cross-checks:**
+- Compare K_e to a dividend yield plus a conservative long-run growth rate (a pricing check, not a replacement for CAPM)
+- Compare K_e to a reasonable range for the sector and company size, and explain any drivers of divergence
+
+### Step D — Estimate cost of debt from observable pricing or a synthetic rating
+
+Two approaches:
+1. **Observable pricing** — use latest facility pricing, sukuk yield, or spreads over SAIBOR
+2. **Synthetic rating** — map financial ratios to a rating band, then apply a spread range
+
+Keep K_d as the current **marginal** borrowing rate, not the historical average cost.
+
+### Step E — Handle Zakat vs tax consistently
+
+This is where Saudi WACC models most often break.
+
+If the company is primarily a Zakat payer, interest expense typically does not create the same corporate income tax shield that the textbook formula assumes. Applying K_d × (1 − t) in that case understates WACC.
+
+**Practical defaults:**
+- Income tax payer → use after-tax cost of debt: K_d × (1 − t)
+- Zakat payer → use pre-tax cost of debt as a conservative default, unless a specific tax shield mechanism is clearly documented
+- Mixed structure → apply a weighted approach consistent with the entity's actual tax position
+
+### Step F — Use market value weights, and document all approximations
+
+- **w_e = E / (D + E)**, where E is market cap (or a defensible private valuation proxy)
+- **w_d = D / (D + E)**, where D is the market value of interest-bearing debt (book value is often a reasonable approximation when close to par)
+
+---
+
+## Worked Example (Illustrative Numbers Only)
+
+| Input | Value |
+|-------|-------|
+| SAR risk-free rate | 5.5% |
+| Equity risk premium | 6.0% |
+| Beta | 1.1 |
+| Marginal cost of debt | 7.0% |
+| Equity (market cap) | SAR 1,000M |
+| Debt (book approx.) | SAR 500M |
+
+**Cost of equity:**
+K_e = 5.5% + (1.1 × 6.0%) = **12.1%**
+
+**Weights:**
+w_e = 1,000 / 1,500 = 66.7% &nbsp;|&nbsp; w_d = 500 / 1,500 = 33.3%
+
+**WACC — Zakat payer (no conventional tax shield):**
+WACC = (0.667 × 12.1%) + (0.333 × 7.0%) = **10.4%**
+
+**WACC — income tax payer at t = 20%:**
+WACC = (0.667 × 12.1%) + (0.333 × 7.0% × 0.80) = **9.9%**
+
+The point is not the decimal places. The point is to show clearly why the tax treatment assumption matters and to make it explicit in every model.
+
+---
+
+## Integrity Checklist Before You Publish a Number
+
+1. **Currency consistency** — SAR cash flows and SAR risk-free rate are matched
+2. **No double counting** — if country risk is in ERP, it should not also appear elsewhere
+3. **Debt pricing realism** — K_d reflects current marginal cost, not last year's average
+4. **Tax treatment stated plainly** — one sentence in the assumption box is sufficient
+5. **Sensitivity table included** — WACC ± 0.5% and ± 1.0%, with valuation impact shown
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

@@ -1,0 +1,85 @@
+---
+title: "The Saudi Risk-Free Rate: Peg-Consistent Approaches for Valuation"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 3
+tags: ["valuation", "WACC", "saudi-markets", "risk-free-rate", "macro"]
+description: "How to estimate a SAR-consistent risk-free rate using SAR benchmarks or a peg-consistent build-up method, with practical modeling checks."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A simple diagram or chart showing the build-up from USD risk-free rate to SAR risk-free rate via sovereign spread */}
+
+In valuation, the risk-free rate is an anchor. It must match the currency of your cash flows and be stated transparently.
+
+For Saudi valuations in SAR, two common errors appear repeatedly: using SAIBOR as the risk-free rate, or mixing USD risk-free rates with SAR cash flows. Both will quietly break an otherwise clean model.
+
+This post covers two defensible methods for estimating a SAR-consistent risk-free rate.
+
+---
+
+## What "Risk-Free" Means in a Valuation Model
+
+A proper risk-free rate in valuation should be:
+- Denominated in the **same currency as the cash flows**
+- Matched in **tenor** to the duration of those cash flows (a 10-year benchmark is practical for long-duration models)
+- Free of default risk, or explicitly adjusted if your market does not provide a perfect proxy
+
+---
+
+## Approach A: Use a SAR Government Benchmark (Direct Method)
+
+If you have access to a reliable SAR government yield curve, a long-tenor government yield is a straightforward risk-free proxy.
+
+**Pros:**
+- Correct currency
+- Directly observable benchmark
+
+**Cons:**
+- Liquidity conditions in the SAR government bond market can differ from deep benchmark markets, introducing occasional noise
+
+When using this approach, note the yield date, tenor, and any liquidity caveats in your assumption log.
+
+---
+
+## Approach B: Build-Up Using the Peg (Transparent Method)
+
+A practical and widely used approach is to start with a USD risk-free rate and add a Saudi sovereign default spread proxy:
+
+**R_f(SAR) = R_f(USD) + CDS(KSA)**
+
+This is transparent because each input is independently observable.
+
+**One integrity rule to follow:** if you use a sovereign spread to convert R_f(USD) to R_f(SAR), do not then add another sovereign spread component elsewhere in your cost of equity or ERP without clearly explaining why. Double counting is a common — and often silent — modelling error.
+
+---
+
+## Why SAIBOR Is Not a Risk-Free Rate
+
+SAIBOR is a bank offered rate. It embeds bank credit risk, liquidity premiums, and funding conditions. It is appropriate for pricing floating-rate debt instruments, but it is not the right anchor for a valuation discount rate.
+
+---
+
+## Illustrative Example
+
+| Input | Rate |
+|-------|------|
+| R_f (USD, 10-year) | 4.5% |
+| CDS (KSA, 10-year) | 1.0% |
+| **R_f (SAR, implied)** | **5.5%** |
+
+Label these as illustrative unless you are sourcing live market data at a specific date.
+
+---
+
+## Pitfalls Checklist
+
+1. **Currency mismatch** — SAR cash flows discounted with a USD rate without conversion
+2. **Tenor mismatch** — short-dated risk-free rate applied to long-duration cash flows
+3. **Double counting** — sovereign risk embedded in both the risk-free rate build-up and again in the equity risk premium
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

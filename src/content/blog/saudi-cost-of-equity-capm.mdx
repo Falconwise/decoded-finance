@@ -1,0 +1,74 @@
+---
+title: "Cost of Equity in Saudi Valuation: CAPM, Pricing Cross-Checks, and Liquidity Adjustments"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 3
+tags: ["valuation", "WACC", "saudi-markets", "cost-of-equity", "capm"]
+description: "A defensible approach to estimating cost of equity for Saudi companies using CAPM with practical cross-checks, plus liquidity and size adjustments when needed."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A funnel diagram showing how CAPM inputs — risk-free rate, beta, ERP — combine into a cost of equity estimate, with a cross-check layer below */}
+
+Cost of equity (K_e) is the return required by equity investors. It is a valuation input — not a statement about where a stock is headed.
+
+Saudi models often understate K_e when analysts rely on a mechanically low beta, or when they ignore the liquidity conditions that apply to smaller and less-traded names.
+
+---
+
+## Start with CAPM
+
+**K_e = R_f + (β × ERP)**
+
+Document each input:
+- SAR-consistent R_f (source and tenor)
+- Beta method and stability test results
+- ERP construction, including any country risk logic
+- Any country risk component and where it sits (to avoid double counting)
+
+---
+
+## Dividend Pricing Cross-Check for Mature Dividend Payers
+
+For companies with a stable, mature dividend policy, a useful reasonableness check is:
+
+**K_e ≈ (D₁ / P₀) + g**
+
+Where D₁ is the expected next dividend, P₀ is the current price, and g is a conservative long-run growth rate.
+
+This is a pricing cross-check, not a replacement for CAPM. If CAPM and the dividend check diverge materially, explain the drivers — differences in beta stability, ERP assumptions, or growth expectations. Avoid framing divergence as a claim about mispricing.
+
+---
+
+## Liquidity Premium as a Sensitivity
+
+For thinly traded names — especially small caps on Nomu or companies with limited float — CAPM may not fully capture liquidity risk. You can model a liquidity premium (LP) as an explicit sensitivity:
+
+**K_e(adjusted) = K_e + LP**
+
+Use an illustrative range such as 0.5%–3.0%, show sensitivity across that range, and document the rationale. Present it as a sensitivity, not a precise computed fact.
+
+---
+
+## Illustrative Example
+
+| Input | Value |
+|-------|-------|
+| R_f (SAR, 10-year) | 5.5% |
+| ERP | 6.5% |
+| Beta | 1.1 |
+| **K_e (CAPM)** | **5.5% + (1.1 × 6.5%) = 12.65%** |
+| Liquidity premium (illustrative) | 1.0% |
+| **K_e (adjusted)** | **13.65%** |
+
+---
+
+## Always Show Sensitivity
+
+Present K_e and the resulting WACC across a sensitivity range. This reduces false precision and makes the model more useful for decision-making — which is the whole point.
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*
