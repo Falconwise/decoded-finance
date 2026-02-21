@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'workers/price-updater/**'
+      - '.github/workflows/deploy-worker.yml'
   workflow_dispatch:
 
 jobs:
