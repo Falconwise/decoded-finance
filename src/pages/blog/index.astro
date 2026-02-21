@@ -8,7 +8,14 @@ const sortedPosts = posts.sort((a, b) =>
   new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
 );
 
-const allTags = [...new Set(sortedPosts.flatMap((p) => p.data.tags))].sort();
+const tagCounts = sortedPosts.flatMap((p) => p.data.tags).reduce((acc: Record<string, number>, tag) => {
+  acc[tag] = (acc[tag] || 0) + 1;
+  return acc;
+}, {});
+const allTags = Object.entries(tagCounts)
+  .filter(([, count]) => count >= 3)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([tag]) => tag);
 const selectedTopic = Astro.url.searchParams.get('topic');
 const activeTopic = allTags.includes(selectedTopic ?? '') ? selectedTopic : null;
 
