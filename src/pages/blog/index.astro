@@ -81,7 +81,7 @@ const latestPosts = featuredPost
                   </h2>
                   <p class="text-gray-600 max-w-3xl leading-relaxed mb-5">{featuredPost.data.description}</p>
                   <div class="flex flex-wrap gap-2 mb-6">
-                    {featuredPost.data.tags.map((tag) => (
+                    {featuredPost.data.tags.slice(0, 2).map((tag) => (
                       <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="badge bg-sage-50 text-sage-700 no-underline hover:bg-sage-100 transition-colors">{tag}</a>
                     ))}
                   </div>
@@ -100,12 +100,7 @@ const latestPosts = featuredPost
                               {post.data.title}
                             </a>
                           </h3>
-                          <p class="text-gray-600 leading-relaxed mb-4">{post.data.description}</p>
-                          <div class="flex flex-wrap gap-2">
-                            {post.data.tags.slice(0, 4).map((tag) => (
-                              <a href={`/blog?topic=${encodeURIComponent(tag)}`} class="text-xs uppercase tracking-wide text-gray-500 bg-gray-50 px-2 py-1 rounded no-underline hover:bg-sage-50 hover:text-sage-700 transition-colors">{tag}</a>
-                            ))}
-                          </div>
+                          <p class="text-gray-600 leading-relaxed">{post.data.description}</p>
                         </div>
                         <div class="md:text-right shrink-0">
                           <p class="meta mb-3">{formatDate(post.data.publishedDate)} · {post.data.reading_time} min</p>
