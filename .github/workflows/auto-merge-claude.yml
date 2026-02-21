@@ -5,11 +5,40 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
+  push:
+    branches:
+      - 'claude/**'
 
 jobs:
-  auto-merge:
+  auto-create-pr:
+    name: Auto-create PR on push
     runs-on: ubuntu-latest
-    if: startsWith(github.head_ref, 'claude/')
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Create PR if not exists
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          EXISTING=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number')
+          if [ -z "$EXISTING" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Auto PR: $BRANCH" \
+              --body "Auto-merge PR for changes on $BRANCH."
+            echo "PR created for $BRANCH"
+          else
+            echo "PR #$EXISTING already exists for $BRANCH — skipping."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  auto-merge:
+    name: Auto-merge Claude PR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'claude/')
     permissions:
       contents: write
       pull-requests: write
