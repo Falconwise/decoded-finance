@@ -12,11 +12,9 @@ import type { IPORecord } from '../../data/ipo-data';
 
 // ---- Live price worker ----
 // Set PUBLIC_PRICE_WORKER_URL in your Cloudflare Pages environment variables
-// (or .env file locally) to the deployed Worker URL, e.g.:
+// (or .env.local file) to the deployed Worker URL, e.g.:
 //   PUBLIC_PRICE_WORKER_URL=https://decoded-finance-price-updater.YOUR_SUBDOMAIN.workers.dev
-const PRICE_WORKER_URL: string =
-    (import.meta as unknown as { env: Record<string, string> }).env
-        ?.PUBLIC_PRICE_WORKER_URL ?? '';
+const PRICE_WORKER_URL: string = import.meta.env.PUBLIC_PRICE_WORKER_URL || '';
 
 // ---- Types ----
 
