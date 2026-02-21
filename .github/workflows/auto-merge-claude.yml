@@ -18,6 +18,8 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Create PR if not exists
         run: |
           BRANCH="${GITHUB_REF#refs/heads/}"
@@ -30,7 +32,7 @@ jobs:
               --body "Auto-merge PR for changes on $BRANCH."
             echo "PR created for $BRANCH"
           else
-            echo "PR #$EXISTING already exists for $BRANCH — skipping."
+            echo "PR #$EXISTING already exists for $BRANCH - skipping."
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
