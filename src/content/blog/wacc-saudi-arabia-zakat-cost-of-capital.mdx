@@ -8,11 +8,11 @@ description: "A practitioner-focused guide to building WACC for Saudi companies,
 featured: false
 ---
 
-{/* IMAGE PLACEHOLDER: A clean diagram showing the WACC formula components — equity weight, cost of equity, debt weight, cost of debt — in a Saudi market context */}
+{/* IMAGE PLACEHOLDER: A clean diagram showing the WACC formula components - equity weight, cost of equity, debt weight, cost of debt - in a Saudi market context */}
 
 Saudi valuations often go wrong for one simple reason. Analysts import a textbook WACC and apply it to SAR cash flows without adjusting for local mechanics.
 
-This post lays out a practical, audit-friendly WACC workflow for Saudi companies. The goal is not a single perfect number — it's a WACC that is internally consistent, explainable to a CFO, and easy to sensitize.
+This post lays out a practical, audit-friendly WACC workflow for Saudi companies. The goal is not a single perfect number - it's a WACC that is internally consistent, explainable to a CFO, and easy to sensitize.
 
 ---
 
@@ -25,33 +25,33 @@ Weighted Average Cost of Capital is the blended required return demanded by all 
 Where:
 - **w_e**, **w_d** are market value weights of equity and debt
 - **K_e** is cost of equity
-- **K_d** is cost of debt — after-tax only when a genuine tax shield exists
+- **K_d** is cost of debt - after-tax only when a genuine tax shield exists
 
 ---
 
 ## Step-by-Step WACC Workflow for Saudi Companies
 
-### Step A — Pick the valuation currency first
+### Step A - Pick the valuation currency first
 
 If your cash flows are in SAR, every WACC input must be SAR-consistent:
 - Risk-free rate must be SAR-based
 - Country risk adjustments must not be double-counted
 - Inflation and growth assumptions should match the currency
 
-If you are valuing in USD, that is also defensible — but then cash flows, discount rate, and terminal growth must all be USD-consistent. Do not mix the two.
+If you are valuing in USD, that is also defensible - but then cash flows, discount rate, and terminal growth must all be USD-consistent. Do not mix the two.
 
-### Step B — Estimate the SAR risk-free rate
+### Step B - Estimate the SAR risk-free rate
 
 Two defensible approaches:
 
-1. **Direct SAR government yield** — use a long-tenor SAR government bond yield when a reliable, liquid benchmark is available.
-2. **Peg-consistent build-up** — start with a USD risk-free rate and add a Saudi sovereign spread proxy:
+1. **Direct SAR government yield** - use a long-tenor SAR government bond yield when a reliable, liquid benchmark is available.
+2. **Peg-consistent build-up** - start with a USD risk-free rate and add a Saudi sovereign spread proxy:
 
 **R_f(SAR) = R_f(USD) + CDS(KSA)**
 
 Use the same tenor for both components. Label inputs as illustrative if you are not using a live market feed.
 
-### Step C — Build cost of equity using CAPM, then sanity-check it
+### Step C - Build cost of equity using CAPM, then sanity-check it
 
 Baseline CAPM:
 
@@ -60,21 +60,21 @@ Baseline CAPM:
 Document clearly:
 - Risk-free rate source and tenor
 - Beta method (regression beta, adjusted beta, or bottom-up beta)
-- ERP construction — global base, plus any country risk component if used
+- ERP construction - global base, plus any country risk component if used
 
 **Useful cross-checks:**
 - Compare K_e to a dividend yield plus a conservative long-run growth rate (a pricing check, not a replacement for CAPM)
 - Compare K_e to a reasonable range for the sector and company size, and explain any drivers of divergence
 
-### Step D — Estimate cost of debt from observable pricing or a synthetic rating
+### Step D - Estimate cost of debt from observable pricing or a synthetic rating
 
 Two approaches:
-1. **Observable pricing** — use latest facility pricing, sukuk yield, or spreads over SAIBOR
-2. **Synthetic rating** — map financial ratios to a rating band, then apply a spread range
+1. **Observable pricing** - use latest facility pricing, sukuk yield, or spreads over SAIBOR
+2. **Synthetic rating** - map financial ratios to a rating band, then apply a spread range
 
 Keep K_d as the current **marginal** borrowing rate, not the historical average cost.
 
-### Step E — Handle Zakat vs tax consistently
+### Step E - Handle Zakat vs tax consistently
 
 This is where Saudi WACC models most often break.
 
@@ -85,7 +85,7 @@ If the company is primarily a Zakat payer, interest expense typically does not c
 - Zakat payer → use pre-tax cost of debt as a conservative default, unless a specific tax shield mechanism is clearly documented
 - Mixed structure → apply a weighted approach consistent with the entity's actual tax position
 
-### Step F — Use market value weights, and document all approximations
+### Step F - Use market value weights, and document all approximations
 
 - **w_e = E / (D + E)**, where E is market cap (or a defensible private valuation proxy)
 - **w_d = D / (D + E)**, where D is the market value of interest-bearing debt (book value is often a reasonable approximation when close to par)
@@ -109,10 +109,10 @@ K_e = 5.5% + (1.1 × 6.0%) = **12.1%**
 **Weights:**
 w_e = 1,000 / 1,500 = 66.7% &nbsp;|&nbsp; w_d = 500 / 1,500 = 33.3%
 
-**WACC — Zakat payer (no conventional tax shield):**
+**WACC - Zakat payer (no conventional tax shield):**
 WACC = (0.667 × 12.1%) + (0.333 × 7.0%) = **10.4%**
 
-**WACC — income tax payer at t = 20%:**
+**WACC - income tax payer at t = 20%:**
 WACC = (0.667 × 12.1%) + (0.333 × 7.0% × 0.80) = **9.9%**
 
 The point is not the decimal places. The point is to show clearly why the tax treatment assumption matters and to make it explicit in every model.
@@ -121,11 +121,11 @@ The point is not the decimal places. The point is to show clearly why the tax tr
 
 ## Integrity Checklist Before You Publish a Number
 
-1. **Currency consistency** — SAR cash flows and SAR risk-free rate are matched
-2. **No double counting** — if country risk is in ERP, it should not also appear elsewhere
-3. **Debt pricing realism** — K_d reflects current marginal cost, not last year's average
-4. **Tax treatment stated plainly** — one sentence in the assumption box is sufficient
-5. **Sensitivity table included** — WACC ± 0.5% and ± 1.0%, with valuation impact shown
+1. **Currency consistency** - SAR cash flows and SAR risk-free rate are matched
+2. **No double counting** - if country risk is in ERP, it should not also appear elsewhere
+3. **Debt pricing realism** - K_d reflects current marginal cost, not last year's average
+4. **Tax treatment stated plainly** - one sentence in the assumption box is sufficient
+5. **Sensitivity table included** - WACC ± 0.5% and ± 1.0%, with valuation impact shown
 
 ---
 
