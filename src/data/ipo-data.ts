@@ -82,9 +82,9 @@ export const ipoData: IPODataset = {
             offer_price: 45,
             market_cap_at_ipo_sar: 4_500_000_000,
             confidence: "High",
-            source_urls: ["https://decoded.finance/case-studies/al-rashed-ipo"],
+            source_urls: [],
             notes: "Ticker 4339 to be confirmed against Saudi Exchange official records.",
-            has_case_study: true,
+            has_case_study: false,
             description: "Consumer food company manufacturing dairy, juices and snacks across Saudi Arabia and GCC",
         },
         {

@@ -1,5 +1,6 @@
 // ============================================================
 // decoded.finance — Cloudflare Worker: IPO Price & PE Updater
+// Redeploy: 2026-02-22 (debug logging enabled)
 //
 // Runs on a daily cron schedule, fetches current prices and
 // trailing P/E ratios for all IPO tracker stocks from Yahoo
