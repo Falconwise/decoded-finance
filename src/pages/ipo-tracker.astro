@@ -2,9 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import IPOTable from '../components/ipo-tracker/IPOTable';
 import { getCollection } from 'astro:content';
-import { ipoData, getUniqueSectors } from '../data/ipo-data';
+import { ipoData, getPublicIPOs, getUniqueSectors, getAvailableYears } from '../data/ipo-data';
 
+const publicIPOs = getPublicIPOs();
 const sectors = getUniqueSectors();
+const years = getAvailableYears();
 const caseStudies = await getCollection('case-studies');
 const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
 ---
@@ -21,8 +23,8 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
         <h1 class="mb-3">Saudi IPO Tracker</h1>
         <p class="text-gray-600 max-w-2xl">
           Complete database of Saudi Arabian IPOs across TASI (Main Market) and Nomu (Parallel Market),
-          with live performance data, valuation metrics, and in-depth analysis links.
-          Prices are fetched daily from Yahoo Finance (.SR tickers) via a Cloudflare Worker.
+          with live prices and P/E ratios updated daily after Tadawul market close.
+          The single best free resource for studying Saudi capital markets.
         </p>
         <p class="meta mt-2">
           Data as of: {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -36,23 +38,24 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
           <p class="text-xs text-gray-600 m-0 leading-relaxed">
             <strong>Source:</strong> {ipoData.metadata.data_source}
             <span class="mx-2">•</span>
-            <strong>Live prices:</strong> Yahoo Finance (Tadawul .SR tickers) via daily Cloudflare Worker cron
+            <strong>Live prices:</strong> Yahoo Finance (.SR tickers), updated daily after Tadawul close
             <span class="mx-2">•</span>
-            <strong>IPO data as of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            <strong>Data as of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
         <IPOTable
           client:load
-          data={ipoData.ipos}
+          data={publicIPOs}
           sectors={sectors}
+          years={years}
           availableCaseStudySlugs={availableCaseStudySlugs}
         />
       </div>
 
       <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
         <p class="text-xs text-gray-600 m-0 leading-relaxed">
-          IPO tracker entries are informational snapshots. Live prices are sourced from Yahoo Finance via the Tadawul .SR ticker format and are updated once daily after market close — they may be delayed, incomplete, or revised.
-          Market classifications (TASI / Nomu) are for informational purposes. This data does not constitute real-time market data or investment advice.
+          Data is provided for informational purposes only. Live prices are sourced from Yahoo Finance and updated once daily after Tadawul market close — they may be delayed or revised.
+          This data does not constitute real-time market data or investment advice.
         </p>
       </div>
     </div>

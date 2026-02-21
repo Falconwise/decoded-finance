@@ -1,10 +1,13 @@
 // ============================================================
-// decoded.finance — Cloudflare Worker: IPO Price Updater
+// decoded.finance — Cloudflare Worker: IPO Price & PE Updater
 //
-// Runs on a daily cron schedule, fetches current prices for
-// all 19 IPO tracker stocks from Yahoo Finance (.SR tickers),
-// calculates return % vs IPO price, stores in KV, and
-// triggers a Cloudflare Pages rebuild.
+// Runs on a daily cron schedule, fetches current prices and
+// trailing P/E ratios for all IPO tracker stocks from Yahoo
+// Finance (.SR tickers), calculates return % vs IPO price,
+// stores in KV, and optionally triggers a Pages rebuild.
+//
+// Endpoint used: Yahoo Finance v7/finance/quote (returns price
+// + trailingPE in a single call per symbol).
 //
 // No API key required — uses Yahoo Finance public endpoints.
 // ============================================================
@@ -15,8 +18,6 @@ export interface Env {
     /**
      * Cloudflare Pages deploy hook URL (set as a Worker secret).
      * Setup: npx wrangler secret put PAGES_DEPLOY_HOOK
-     * Value:  Cloudflare Dashboard → Pages → Project → Settings
-     *         → Builds & Deployments → Deploy Hooks → Create hook
      */
     PAGES_DEPLOY_HOOK?: string;
 }
@@ -27,8 +28,9 @@ interface PriceEntry {
     symbol: string;
     ticker: string;
     currentPrice: number | null;
-    ipoPrice: number;
+    ipoPrice: number | null;   // null for direct listings
     returnPct: number | null;
+    peRatio: number | null;
     currency: string;
     updatedAt: string;
 }
@@ -40,41 +42,53 @@ export interface PriceCache {
     failCount: number;
 }
 
-// ---- All 19 Saudi IPO stocks ----
-// Tickers are constructed as `${symbol}.SR` for Yahoo Finance Tadawul feed
+// ---- All tracked Saudi IPO stocks ----
+// Tickers are constructed as `${symbol}.SR` for Yahoo Finance Tadawul feed.
+// ipoPrice: null for direct listings (no offer price, so no return % is computed).
 
-const IPO_STOCKS: Array<{ symbol: string; ipoPrice: number }> = [
-    { symbol: '1111', ipoPrice: 112.48 },  // Saudi Tadawul Group
-    { symbol: '4325', ipoPrice: 74.79 },   // Umm Al Qura Development
-    { symbol: '2082', ipoPrice: 161.45 },  // ACWA Power
-    { symbol: '4013', ipoPrice: 240.05 },  // Dr. Sulaiman Al Habib
-    { symbol: '4264', ipoPrice: 80.00 },   // Flynas Airlines
-    { symbol: '4161', ipoPrice: 108.52 },  // BinDawood Holding
-    { symbol: '4323', ipoPrice: 11.54 },   // Theeb Rent a Car
-    { symbol: '1262', ipoPrice: 11.36 },   // Al Khorayef Water & Power
-    { symbol: '4338', ipoPrice: 7.71 },    // Alkhabeer Income Fund REIT
-    { symbol: '4210', ipoPrice: 14.51 },   // Almasar Alshamil Education
-    { symbol: '4140', ipoPrice: 9.77 },    // Nayifat Finance
-    { symbol: '2281', ipoPrice: 14.44 },   // Almunajem Foods
-    { symbol: '1321', ipoPrice: 20.29 },   // East Pipes Integrated
-    { symbol: '4265', ipoPrice: 12.36 },   // Cherry Trading
-    { symbol: '2310', ipoPrice: 42.16 },   // stc solutions
-    { symbol: '4330', ipoPrice: 7.93 },    // Amlak International
-    { symbol: '2370', ipoPrice: 15.40 },   // Elm Company
-    { symbol: '4281', ipoPrice: 15.44 },   // Tanmiah Food
-    { symbol: '1217', ipoPrice: 23.64 },   // Arabian Contracting Services
+const IPO_STOCKS: Array<{ symbol: string; ipoPrice: number | null; name: string }> = [
+    // ── 2026 ────────────────────────────────────────────────────
+    { symbol: '4339', ipoPrice: 45,     name: 'Al Rashed Foods' },
+
+    // ── 2025 ────────────────────────────────────────────────────
+    { symbol: '4264', ipoPrice: 80,     name: 'Flynas Airlines' },
+    { symbol: '6019', ipoPrice: 19.50,  name: 'Almasar Alshamil Education' },
+    { symbol: '4265', ipoPrice: 28,     name: 'Cherry Trading' },
+
+    // ── 2024 ────────────────────────────────────────────────────
+    { symbol: '4325', ipoPrice: 74.79,  name: 'Umm Al Qura Development' },
+
+    // ── 2022 ────────────────────────────────────────────────────
+    { symbol: '7203', ipoPrice: 128,    name: 'Elm Company' },
+    { symbol: '1321', ipoPrice: 80,     name: 'East Pipes Integrated' },
+
+    // ── 2021 ────────────────────────────────────────────────────
+    { symbol: '1111', ipoPrice: 112.48, name: 'Saudi Tadawul Group' },
+    { symbol: '7202', ipoPrice: 151,    name: 'stc solutions' },
+    { symbol: '2082', ipoPrice: 56,     name: 'ACWA Power' },
+    { symbol: '1217', ipoPrice: 23.64,  name: 'Arabian Contracting Services' },
+    { symbol: '2281', ipoPrice: 14.44,  name: 'Almunajem Foods' },
+    { symbol: '4281', ipoPrice: 15.44,  name: 'Tanmiah Food' },
+    { symbol: '1262', ipoPrice: 11.36,  name: 'Al Khorayef Water & Power' },
+    { symbol: '4081', ipoPrice: 34,     name: 'Nayifat Finance' },
+    { symbol: '4323', ipoPrice: 11.54,  name: 'Theeb Rent a Car' },
+
+    // ── 2020 ────────────────────────────────────────────────────
+    { symbol: '1182', ipoPrice: 16,     name: 'Amlak International' },
+    { symbol: '4013', ipoPrice: 240.05, name: 'Dr. Sulaiman Al Habib' },
+    { symbol: '4161', ipoPrice: 108.52, name: 'BinDawood Holding' },
 ];
 
-// ---- Yahoo Finance price fetch ----
+// ---- Yahoo Finance price + P/E fetch ----
+// Uses v7/finance/quote which returns regularMarketPrice + trailingPE in one call.
 
-async function fetchYahooPrice(
+async function fetchYahooQuote(
     symbol: string
-): Promise<{ price: number | null; currency: string }> {
+): Promise<{ price: number | null; peRatio: number | null; currency: string }> {
     const ticker = `${symbol}.SR`;
-    // Use query2 as a fallback host; query1 is preferred
     const url =
-        `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}` +
-        `?interval=1d&range=1d&includePrePost=false`;
+        `https://query1.finance.yahoo.com/v7/finance/quote` +
+        `?symbols=${encodeURIComponent(ticker)}&fields=regularMarketPrice,trailingPE,currency`;
 
     try {
         const res = await fetch(url, {
@@ -85,31 +99,38 @@ async function fetchYahooPrice(
                     'Chrome/121.0.0.0 Safari/537.36',
                 Accept: 'application/json',
             },
-            // 10-second timeout
             signal: AbortSignal.timeout(10_000),
         });
 
         if (!res.ok) {
             console.warn(`[price-updater] ${ticker}: HTTP ${res.status}`);
-            return { price: null, currency: 'SAR' };
+            return { price: null, peRatio: null, currency: 'SAR' };
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data: any = await res.json();
-        const meta = data?.chart?.result?.[0]?.meta;
+        const result = data?.quoteResponse?.result?.[0];
 
-        if (!meta?.regularMarketPrice) {
+        if (!result?.regularMarketPrice) {
             console.warn(`[price-updater] ${ticker}: no regularMarketPrice in response`);
-            return { price: null, currency: meta?.currency ?? 'SAR' };
+            return { price: null, peRatio: null, currency: result?.currency ?? 'SAR' };
         }
 
+        // trailingPE can be negative (unprofitable) or absent — normalise to null if invalid
+        const rawPE = result?.trailingPE;
+        const peRatio =
+            typeof rawPE === 'number' && rawPE > 0 && rawPE < 10_000
+                ? Math.round(rawPE * 10) / 10
+                : null;
+
         return {
-            price: meta.regularMarketPrice as number,
-            currency: (meta.currency as string) ?? 'SAR',
+            price: result.regularMarketPrice as number,
+            peRatio,
+            currency: (result.currency as string) ?? 'SAR',
         };
     } catch (err) {
         console.error(`[price-updater] ${ticker}: fetch error`, err);
-        return { price: null, currency: 'SAR' };
+        return { price: null, peRatio: null, currency: 'SAR' };
     }
 }
 
@@ -121,10 +142,11 @@ async function updatePrices(env: Env): Promise<PriceCache> {
     let failCount = 0;
 
     for (const stock of IPO_STOCKS) {
-        const { price, currency } = await fetchYahooPrice(stock.symbol);
+        const { price, peRatio, currency } = await fetchYahooQuote(stock.symbol);
 
+        // Return % only computable when both current price and IPO price are known
         const returnPct =
-            price !== null
+            price !== null && stock.ipoPrice !== null
                 ? Math.round(((price - stock.ipoPrice) / stock.ipoPrice) * 1000) / 10
                 : null;
 
@@ -137,11 +159,13 @@ async function updatePrices(env: Env): Promise<PriceCache> {
             currentPrice: price,
             ipoPrice: stock.ipoPrice,
             returnPct,
+            peRatio,
             currency,
             updatedAt: new Date().toISOString(),
         });
 
-        // 300ms delay between requests — courteous to Yahoo Finance
+        // 300ms delay between requests — courteous to Yahoo Finance.
+        // Cron Triggers have a 15-minute CPU limit, so 19 stocks × 300ms = ~5.7s is well within budget.
         await new Promise<void>((resolve) => setTimeout(resolve, 300));
     }
 
@@ -230,6 +254,7 @@ export default {
                 lastFetch: cache?.fetchedAt ?? null,
                 successCount: cache?.successCount ?? null,
                 failCount: cache?.failCount ?? null,
+                stockCount: IPO_STOCKS.length,
                 ts: new Date().toISOString(),
             });
         }
@@ -242,7 +267,7 @@ export default {
      * ~10 minutes after Tadawul market close at 3:00 pm AST / 12:00 UTC).
      *
      * Saudi Tadawul trades Sunday–Thursday.
-     * The cron runs every day so weekday closes are always captured.
+     * The cron runs every day so all weekday closes are captured.
      */
     async scheduled(_event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
         ctx.waitUntil(
