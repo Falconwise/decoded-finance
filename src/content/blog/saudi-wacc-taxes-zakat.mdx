@@ -1,0 +1,55 @@
+---
+title: "Taxes and Zakat in Saudi WACC: Deductibility, Effective Rates, and Modeling Choices"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 2
+tags: ["valuation", "WACC", "saudi-markets", "zakat", "tax"]
+description: "How to handle Zakat and corporate income tax in Saudi WACC models, with clear rules for after-tax cost of debt and mixed structures."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A two-path decision tree showing when to use after-tax vs pre-tax cost of debt in WACC, depending on Zakat vs income tax status */}
+
+A common error in Saudi WACC models is applying a foreign after-tax debt formula without first checking whether the same interest deductibility applies to the entity being valued.
+
+Get this wrong and WACC is understated — sometimes meaningfully.
+
+---
+
+## The Standard Textbook Formula
+
+**WACC = (w_e × K_e) + [w_d × K_d × (1 − t)]**
+
+This formula assumes a corporate income tax shield: that interest expense reduces taxable income, making debt financing cheaper than its face cost.
+
+---
+
+## Practical Modeling Defaults for Saudi Entities
+
+| Entity Type | Default Treatment | Rationale |
+|-------------|------------------|-----------|
+| Income tax payer | K_d × (1 − t) | Standard tax shield applies |
+| Zakat payer | K_d (pre-tax) | Conventional interest deduction not established |
+| Mixed structure | Weighted blend | Document clearly with entity-level detail |
+
+For Zakat payers, the conservative and defensible default is to treat K_d at its full pre-tax rate, unless you have specific, documented evidence that an interest tax shield is available to the entity.
+
+---
+
+## Mixed Structures
+
+Some Saudi entities pay both Zakat and corporate income tax — for example, companies with foreign ownership stakes above certain thresholds. In these cases, you can approximate an effective shield factor and apply it to K_d. This must be grounded in the entity's actual structure and supported by qualified tax advice where required.
+
+---
+
+## Why Sensitivity Is Mandatory Here
+
+The difference between assuming a full tax shield and assuming none can be 50–100 basis points in WACC. That is not a rounding error — it is a material valuation input.
+
+Show WACC under both assumptions and present valuation sensitivity to the range. This is more honest and more useful than claiming precision on a point that requires professional tax judgment.
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

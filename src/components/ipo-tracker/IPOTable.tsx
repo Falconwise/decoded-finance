@@ -11,9 +11,6 @@ import {
 import type { IPORecord } from '../../data/ipo-data';
 
 // ---- Live price worker ----
-// Set PUBLIC_PRICE_WORKER_URL in your Cloudflare Pages environment variables
-// (or .env.local file) to the deployed Worker URL, e.g.:
-//   PUBLIC_PRICE_WORKER_URL=https://decoded-finance-price-updater.YOUR_SUBDOMAIN.workers.dev
 const PRICE_WORKER_URL: string = import.meta.env.PUBLIC_PRICE_WORKER_URL || 'https://decoded-finance-price-updater.a-gaffarcfa.workers.dev';
 
 // ---- Types ----
@@ -42,6 +39,7 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState('');
     const [sectorFilter, setSectorFilter] = useState('all');
+    const [marketFilter, setMarketFilter] = useState('all');
 
     // Live price state
     const [livePrices, setLivePrices] = useState<Record<string, LivePriceEntry>>({});
@@ -72,15 +70,46 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
             });
     }, []);
 
+    // Dynamic summary stats computed from live data (or static fallback)
+    const summaryStats = useMemo(() => {
+        let totalReturn = 0;
+        let bestReturn = -Infinity;
+        let worstReturn = Infinity;
+        let bestCompany = '';
+        let worstCompany = '';
+        const totalCap = data.reduce((sum, ipo) => sum + ipo.market_cap_sar, 0);
+        const uniqueSectors = new Set(data.map(ipo => ipo.sector)).size;
+
+        for (const ipo of data) {
+            const ret = livePrices[ipo.symbol]?.returnPct ?? ipo.return_from_ipo;
+            totalReturn += ret;
+            if (ret > bestReturn) { bestReturn = ret; bestCompany = ipo.company_name; }
+            if (ret < worstReturn) { worstReturn = ret; worstCompany = ipo.company_name; }
+        }
+
+        return {
+            totalCount: data.length,
+            totalCap: (totalCap / 1_000_000_000).toFixed(1),
+            avgReturn: (totalReturn / data.length).toFixed(1),
+            bestReturn: bestReturn.toFixed(1),
+            bestCompany,
+            worstReturn: worstReturn.toFixed(1),
+            worstCompany,
+            uniqueSectors,
+            isLive: pricesStatus === 'ok',
+        };
+    }, [data, livePrices, pricesStatus]);
+
     const filteredData = useMemo(() => {
-        if (sectorFilter === 'all') return data;
-        return data.filter((ipo) => ipo.sector === sectorFilter);
-    }, [data, sectorFilter]);
+        let result = data;
+        if (sectorFilter !== 'all') result = result.filter((ipo) => ipo.sector === sectorFilter);
+        if (marketFilter !== 'all') result = result.filter((ipo) => ipo.market === marketFilter);
+        return result;
+    }, [data, sectorFilter, marketFilter]);
 
     const hasPublishedCaseStudy = (ipo: IPORecord) =>
         ipo.has_case_study && availableCaseStudySlugs.includes(ipo.id);
 
-    // Resolve the best available return % for a row
     const getLiveReturn = (symbol: string, staticReturn: number): number =>
         livePrices[symbol]?.returnPct ?? staticReturn;
 
@@ -93,7 +122,7 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                     <div>
                         <div style={{ fontWeight: 700 }}>{row.original.company_name}</div>
                         <div style={{ fontSize: '0.75rem', color: '#888', fontFamily: 'var(--font-mono)' }}>
-                            {row.original.symbol} · {row.original.sector}
+                            {row.original.symbol}
                         </div>
                     </div>
                 ),
@@ -104,6 +133,28 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                 cell: ({ getValue }) => (
                     <span className="ipo-badge">{getValue() as string}</span>
                 ),
+            },
+            {
+                accessorKey: 'market',
+                header: 'Market',
+                cell: ({ getValue }) => {
+                    const market = getValue() as string;
+                    return (
+                        <span style={{
+                            display: 'inline-block',
+                            padding: '2px 8px',
+                            borderRadius: '4px',
+                            fontSize: '0.68rem',
+                            fontWeight: 700,
+                            textTransform: 'uppercase' as const,
+                            letterSpacing: '0.4px',
+                            background: market === 'TASI' ? '#e5e9e3' : '#fef3c7',
+                            color: market === 'TASI' ? '#54634e' : '#92400e',
+                        }}>
+                            {market}
+                        </span>
+                    );
+                },
             },
             {
                 accessorKey: 'listing_date',
@@ -250,7 +301,6 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
         getFilteredRowModel: getFilteredRowModel(),
     });
 
-    // Format the "prices as of" timestamp for display
     const pricesAsOf = pricesFetchedAt
         ? new Date(pricesFetchedAt).toLocaleString('en-US', {
               month: 'short',
@@ -262,18 +312,78 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
           })
         : null;
 
+    const avgReturnNum = Number(summaryStats.avgReturn);
+
     return (
         <div>
+            {/* Dynamic Summary Stats */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                gap: '10px',
+                marginBottom: '20px',
+            }}>
+                {[
+                    {
+                        label: 'Total IPOs',
+                        value: summaryStats.totalCount.toString(),
+                        color: '#7A8B72',
+                    },
+                    {
+                        label: 'Total Market Cap',
+                        value: `SAR ${summaryStats.totalCap}B`,
+                        color: '#7A8B72',
+                    },
+                    {
+                        label: `Avg Return${summaryStats.isLive ? ' ↻' : ''}`,
+                        value: `${avgReturnNum >= 0 ? '+' : ''}${summaryStats.avgReturn}%`,
+                        color: avgReturnNum >= 0 ? '#16a34a' : '#dc2626',
+                    },
+                    {
+                        label: 'Best Performer',
+                        value: `+${summaryStats.bestReturn}%`,
+                        sub: summaryStats.bestCompany,
+                        color: '#16a34a',
+                    },
+                    {
+                        label: 'Sectors Covered',
+                        value: summaryStats.uniqueSectors.toString(),
+                        color: '#7A8B72',
+                    },
+                ].map(({ label, value, sub, color }) => (
+                    <div key={label} style={{
+                        background: '#fff',
+                        border: '1px solid #eee',
+                        borderRadius: '8px',
+                        padding: '12px 14px',
+                        textAlign: 'center',
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '1.15rem',
+                            fontWeight: 700,
+                            color,
+                            marginBottom: '2px',
+                            lineHeight: 1.2,
+                        }}>{value}</div>
+                        <div style={{ fontSize: '0.7rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
+                        {sub && (
+                            <div style={{ fontSize: '0.65rem', color: '#aaa', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={sub}>{sub}</div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
             {/* Filter Controls */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <input
                     type="text"
                     placeholder="Search companies..."
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
                     style={{
-                        flex: '1 1 200px',
-                        padding: '10px 16px',
+                        flex: '1 1 180px',
+                        padding: '9px 14px',
                         border: '1px solid #ddd',
                         borderRadius: '4px',
                         fontFamily: 'var(--font-body)',
@@ -284,7 +394,7 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                     value={sectorFilter}
                     onChange={(e) => setSectorFilter(e.target.value)}
                     style={{
-                        padding: '10px 16px',
+                        padding: '9px 14px',
                         border: '1px solid #ddd',
                         borderRadius: '4px',
                         fontFamily: 'var(--font-body)',
@@ -296,6 +406,22 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                     {sectors.map((s) => (
                         <option key={s} value={s}>{s}</option>
                     ))}
+                </select>
+                <select
+                    value={marketFilter}
+                    onChange={(e) => setMarketFilter(e.target.value)}
+                    style={{
+                        padding: '9px 14px',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px',
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '0.875rem',
+                        backgroundColor: '#fff',
+                    }}
+                >
+                    <option value="all">All Markets</option>
+                    <option value="TASI">TASI (Main)</option>
+                    <option value="Nomu">Nomu (Parallel)</option>
                 </select>
             </div>
 
@@ -397,6 +523,13 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                                     ))}
                                 </tr>
                             ))}
+                            {table.getRowModel().rows.length === 0 && (
+                                <tr>
+                                    <td colSpan={columns.length} style={{ padding: '24px', textAlign: 'center', color: '#888', fontSize: '0.875rem' }}>
+                                        No IPOs match your filters.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -404,6 +537,9 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
 
             {/* Mobile Card Layout */}
             <div className="ipo-table-mobile">
+                {table.getRowModel().rows.length === 0 && (
+                    <p style={{ textAlign: 'center', color: '#888', padding: '24px 0' }}>No IPOs match your filters.</p>
+                )}
                 {table.getRowModel().rows.map((row) => {
                     const ipo = row.original;
                     const live = livePrices[ipo.symbol];
@@ -424,8 +560,16 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                                 <div>
                                     <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{ipo.company_name}</div>
-                                    <div style={{ fontSize: '0.75rem', color: '#888', fontFamily: 'var(--font-mono)' }}>
-                                        {ipo.symbol} · {ipo.sector}
+                                    <div style={{ fontSize: '0.75rem', color: '#888', fontFamily: 'var(--font-mono)', marginTop: '2px', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                        <span>{ipo.symbol}</span>
+                                        <span style={{
+                                            padding: '1px 6px',
+                                            borderRadius: '3px',
+                                            fontSize: '0.65rem',
+                                            fontWeight: 700,
+                                            background: ipo.market === 'TASI' ? '#e5e9e3' : '#fef3c7',
+                                            color: ipo.market === 'TASI' ? '#54634e' : '#92400e',
+                                        }}>{ipo.market}</span>
                                     </div>
                                 </div>
                                 <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: returnColor, fontSize: '0.9rem', textAlign: 'right' }}>
@@ -451,6 +595,10 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                                         <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{ipo.market_cap_display}</span>
                                     </div>
                                 )}
+                                <div>
+                                    <span style={{ color: '#888' }}>Sector: </span>
+                                    <span style={{ fontWeight: 600 }}>{ipo.sector}</span>
+                                </div>
                             </div>
                             {hasPublishedCaseStudy(ipo) ? (
                                 <a href={`/case-studies/${ipo.id}`} style={{ display: 'inline-block', marginTop: '8px', color: '#B86E4B', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>

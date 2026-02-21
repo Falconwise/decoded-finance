@@ -9,6 +9,7 @@ export interface IPORecord {
     company_name_ar: string;
     symbol: string;
     sector: string;
+    market: 'TASI' | 'Nomu';   // TASI = Main Market, Nomu = Parallel Market
     listing_date: string;
     offer_price: number;
     market_cap_sar: number;
@@ -38,14 +39,16 @@ export interface IPODataset {
     ipos: IPORecord[];
 }
 
-// ---- Real IPO Data (19 Saudi IPOs, 2020-2025) ----
+// ---- Real IPO Data (Saudi IPOs, 2020–present) ----
+// market field: 'TASI' = Main Market, 'Nomu' = Parallel Market
+// Note: please verify market classifications if you spot any discrepancies.
 
 export const ipoData: IPODataset = {
     metadata: {
         last_updated: "2026-02-21",
         total_ipos: 19,
         data_source: "Abdul Gaffar Mohammed, CFA - decoded.finance",
-        description: "Comprehensive Saudi Arabia IPO database (2020-2025) with performance tracking"
+        description: "Comprehensive Saudi Arabia IPO database (2020–present) with performance tracking"
     },
     summary_stats: {
         total_market_cap: 158800000000,
@@ -72,6 +75,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "مجموعة تداول السعودية القابضة",
             symbol: "1111",
             sector: "Financials",
+            market: "TASI",
             listing_date: "2021-12-14",
             offer_price: 112.48,
             market_cap_sar: 12600000000,
@@ -87,6 +91,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة أم القرى للتطوير والإعمار",
             symbol: "4325",
             sector: "Real Estate",
+            market: "TASI",
             listing_date: "2024-03-11",
             offer_price: 74.79,
             market_cap_sar: 7500000000,
@@ -102,6 +107,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة أكوا باور",
             symbol: "2082",
             sector: "Utilities",
+            market: "TASI",
             listing_date: "2021-10-15",
             offer_price: 161.45,
             market_cap_sar: 36000000000,
@@ -117,6 +123,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "مجموعة د. سليمان الحبيب الطبية",
             symbol: "4013",
             sector: "Healthcare",
+            market: "TASI",
             listing_date: "2020-11-19",
             offer_price: 240.05,
             market_cap_sar: 57100000000,
@@ -132,6 +139,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "طيران ناس",
             symbol: "4264",
             sector: "Consumer Discretionary",
+            market: "TASI",
             listing_date: "2025-06-18",
             offer_price: 80,
             market_cap_sar: 5800000000,
@@ -147,6 +155,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة بن داود القابضة",
             symbol: "4161",
             sector: "Consumer Staples",
+            market: "TASI",
             listing_date: "2020-10-16",
             offer_price: 108.52,
             market_cap_sar: 12000000000,
@@ -162,6 +171,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة ذيب لتأجير السيارات",
             symbol: "4323",
             sector: "Consumer Discretionary",
+            market: "TASI",
             listing_date: "2021-03-15",
             offer_price: 11.54,
             market_cap_sar: 2250000000,
@@ -177,6 +187,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة الخريف لتقنيات المياه والطاقة",
             symbol: "1262",
             sector: "Industrials",
+            market: "TASI",
             listing_date: "2021-06-12",
             offer_price: 11.36,
             market_cap_sar: 2750000000,
@@ -192,6 +203,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "صندوق الخبير ريت",
             symbol: "4338",
             sector: "Real Estate",
+            market: "TASI",
             listing_date: "2021-04-12",
             offer_price: 7.71,
             market_cap_sar: 1250000000,
@@ -207,6 +219,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة المسار الشامل للتعليم",
             symbol: "4210",
             sector: "Consumer Discretionary",
+            market: "Nomu",
             listing_date: "2025-02-18",
             offer_price: 14.51,
             market_cap_sar: 2000000000,
@@ -222,6 +235,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة نايفات للتمويل",
             symbol: "4140",
             sector: "Financials",
+            market: "Nomu",
             listing_date: "2021-05-18",
             offer_price: 9.77,
             market_cap_sar: 1000000000,
@@ -229,7 +243,7 @@ export const ipoData: IPODataset = {
             return_from_ipo: -74.3,
             performance_badge: "Underperformer",
             has_case_study: true,
-            description: "Consumer finance company (Nomu market)"
+            description: "Consumer finance company"
         },
         {
             id: "almunajem-foods-company-2021",
@@ -237,6 +251,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة المنجم للأغذية",
             symbol: "2281",
             sector: "Consumer Staples",
+            market: "TASI",
             listing_date: "2021-08-14",
             offer_price: 14.44,
             market_cap_sar: 1800000000,
@@ -252,6 +267,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة أنابيب الشرق المتكاملة",
             symbol: "1321",
             sector: "Industrials",
+            market: "TASI",
             listing_date: "2022-06-12",
             offer_price: 20.29,
             market_cap_sar: 2600000000,
@@ -267,6 +283,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة شيري للتجارة",
             symbol: "4265",
             sector: "Consumer Discretionary",
+            market: "Nomu",
             listing_date: "2025-01-10",
             offer_price: 12.36,
             market_cap_sar: 1400000000,
@@ -282,6 +299,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "خدمات الإنترنت والاتصالات (حلول stc)",
             symbol: "2310",
             sector: "Technology",
+            market: "TASI",
             listing_date: "2021-11-11",
             offer_price: 42.16,
             market_cap_sar: 4600000000,
@@ -297,6 +315,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "أملاك العالمية للتمويل العقاري",
             symbol: "4330",
             sector: "Financials",
+            market: "Nomu",
             listing_date: "2020-12-18",
             offer_price: 7.93,
             market_cap_sar: 1500000000,
@@ -312,6 +331,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة علم",
             symbol: "2370",
             sector: "Technology",
+            market: "TASI",
             listing_date: "2022-12-22",
             offer_price: 15.4,
             market_cap_sar: 3500000000,
@@ -327,6 +347,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة تنمية للأغذية",
             symbol: "4281",
             sector: "Consumer Discretionary",
+            market: "TASI",
             listing_date: "2021-07-09",
             offer_price: 15.44,
             market_cap_sar: 1600000000,
@@ -342,6 +363,7 @@ export const ipoData: IPODataset = {
             company_name_ar: "شركة الخدمات الانشائية العربية (العربية)",
             symbol: "1217",
             sector: "Industrials",
+            market: "TASI",
             listing_date: "2021-09-17",
             offer_price: 23.64,
             market_cap_sar: 3000000000,

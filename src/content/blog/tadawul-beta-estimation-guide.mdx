@@ -1,0 +1,87 @@
+---
+title: "Beta for Tadawul Companies: Regression Limits, Adjustments, and Bottom-Up Alternatives"
+author: "Abdul Gaffar Mohammed, CFA"
+publishedDate: "2026-02-15"
+reading_time: 3
+tags: ["valuation", "WACC", "tadawul", "beta", "risk-modeling"]
+description: "How to estimate beta for Saudi companies using regression cautiously, adjust for leverage correctly, and build bottom-up betas when trading data is noisy."
+featured: false
+---
+
+{/* IMAGE PLACEHOLDER: A scatter plot showing beta regression with a Tadawul-listed stock — demonstrating thin trading noise vs. a cleaner bottom-up estimate */}
+
+Beta is an estimate of how a stock co-moves with the broader market. In Saudi markets, beta estimation carries additional complexity due to liquidity differences, free float effects, and periodic market structure changes.
+
+The goal is not to defend a single method but to choose an approach that is appropriate for the valuation use case — and to document that choice clearly.
+
+---
+
+## Beta Inside CAPM
+
+**K_e = R_f + (β × ERP)**
+
+Beta is a multiplier. If the estimate is unstable, cost of equity inherits that instability, and valuation quality suffers as a result.
+
+---
+
+## Why Regression Beta Can Be Unreliable in Saudi Markets
+
+Regression beta may be noisy when:
+- Trading is thin relative to the index — price moves reflect liquidity, not systematic risk
+- The company has had structural changes in leverage, business mix, or ownership
+- The observation period spans a market regime shift (opening to foreign investors, index reclassification, etc.)
+
+This does not mean regression beta is always wrong. It means you should test its stability before relying on it.
+
+---
+
+## Practical Regression Hygiene
+
+- Test multiple windows — compare 2-year and 5-year estimates
+- Compare daily vs. weekly returns for thinly traded names; weekly often reduces noise
+- Consider an adjusted (Blume-adjusted) beta when the raw regression is extreme: **β_adjusted = (2/3 × β_raw) + (1/3 × 1.0)**
+- Document the window, frequency, and index used
+- Always show a beta sensitivity alongside the selected estimate
+
+---
+
+## Leverage Adjustment and the Zakat Tax Assumption
+
+To remove the effect of capital structure from a peer's beta, unlever it first:
+
+**β_unlevered = β_levered / [1 + (1 − t) × (D/E)]**
+
+Then relever to your company's target capital structure:
+
+**β_levered = β_unlevered × [1 + (1 − t) × (D/E)]**
+
+**Important:** For Zakat payers, a conventional interest tax shield typically does not apply. Set t = 0 in both steps unless you have a clearly documented reason to assume otherwise.
+
+---
+
+## Bottom-Up Beta Workflow
+
+Bottom-up beta is often more stable and better suited for decision-grade valuation:
+
+1. Select a peer set by **business risk** (same sector, comparable operating leverage)
+2. Unlever each peer's regression beta using their actual D/E and tax rate
+3. Take the **median unlevered beta** across the peer set
+4. Relever using your company's target capital structure
+
+This approach works even when there is limited trading history, and it reduces the noise from single-stock regression.
+
+---
+
+## Illustrative Example
+
+Assume β_unlevered (peer median) = 0.9, target D/E = 0.5, Zakat payer (t = 0):
+
+**β_levered = 0.9 × [1 + (1 − 0) × 0.5] = 0.9 × 1.5 = 1.35**
+
+A 0.2 sensitivity around this estimate is reasonable given model uncertainty.
+
+---
+
+*This article is for educational purposes only. It explains valuation concepts and modeling choices. It is not investment advice, a recommendation, or a financial promotion. Examples use illustrative inputs. Verify all data using primary sources and consult an appropriately licensed professional before making financial decisions.*
+
+*CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This content is not endorsed by or affiliated with CFA Institute.*

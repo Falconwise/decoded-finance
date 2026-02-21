@@ -5,14 +5,13 @@ import { getCollection } from 'astro:content';
 import { ipoData, getUniqueSectors } from '../data/ipo-data';
 
 const sectors = getUniqueSectors();
-const totalMarketCap = (ipoData.summary_stats.total_market_cap / 1_000_000_000).toFixed(1);
 const caseStudies = await getCollection('case-studies');
 const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
 ---
 
 <BaseLayout
   title="Saudi IPO Tracker"
-  description="Complete database of Saudi Arabian IPOs with performance data. Track 19+ IPOs across 8 sectors from 2020-2025."
+  description="Complete database of Saudi Arabian IPOs with performance data. Track all IPOs across TASI and Nomu markets from 2020 to present."
 >
   <section class="section bg-alabaster">
     <div class="container">
@@ -21,8 +20,9 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
         <p class="label text-copper mb-2">Live Database</p>
         <h1 class="mb-3">Saudi IPO Tracker</h1>
         <p class="text-gray-600 max-w-2xl">
-          Complete database of Saudi Arabian IPOs with performance data, valuation metrics, and in-depth analysis links.
-          Current prices are fetched daily from Yahoo Finance (.SR tickers) via a Cloudflare Worker.
+          Complete database of Saudi Arabian IPOs across TASI (Main Market) and Nomu (Parallel Market),
+          with live performance data, valuation metrics, and in-depth analysis links.
+          Prices are fetched daily from Yahoo Finance (.SR tickers) via a Cloudflare Worker.
         </p>
         <p class="meta mt-2">
           Data as of: {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -30,31 +30,7 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
         </p>
       </div>
 
-      <!-- Statistics Cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
-        <div class="card text-center py-5">
-          <span class="font-data text-2xl font-bold text-sage block">{ipoData.metadata.total_ipos}</span>
-          <span class="text-sm text-gray-500">Total IPOs</span>
-        </div>
-        <div class="card text-center py-5">
-          <span class="font-data text-2xl font-bold text-sage block">SAR {totalMarketCap}B</span>
-          <span class="text-sm text-gray-500">Total Market Cap</span>
-        </div>
-        <div class="card text-center py-5">
-          <span class="font-data text-2xl font-bold text-sage block performance-positive">+{ipoData.summary_stats.average_return}%</span>
-          <span class="text-sm text-gray-500">Avg. Return</span>
-        </div>
-        <div class="card text-center py-5">
-          <span class="font-data text-2xl font-bold text-sage block">{sectors.length}</span>
-          <span class="text-sm text-gray-500">Sectors</span>
-        </div>
-        <div class="card text-center py-5 col-span-2 lg:col-span-1">
-          <span class="font-data text-lg font-bold text-copper block">{ipoData.summary_stats.best_performer.company}</span>
-          <span class="text-sm text-gray-500">Top: +{ipoData.summary_stats.best_performer.return}%</span>
-        </div>
-      </div>
-
-      <!-- Interactive IPO Table (React Island) -->
+      <!-- Interactive IPO Table (React Island — includes live summary stats) -->
       <div class="card p-4 md:p-6">
         <div class="mb-4 p-3 rounded bg-alabaster border border-gray-200">
           <p class="text-xs text-gray-600 m-0 leading-relaxed">
@@ -76,7 +52,7 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
       <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
         <p class="text-xs text-gray-600 m-0 leading-relaxed">
           IPO tracker entries are informational snapshots. Live prices are sourced from Yahoo Finance via the Tadawul .SR ticker format and are updated once daily after market close — they may be delayed, incomplete, or revised.
-          This data does not constitute real-time market data or investment advice.
+          Market classifications (TASI / Nomu) are for informational purposes. This data does not constitute real-time market data or investment advice.
         </p>
       </div>
     </div>

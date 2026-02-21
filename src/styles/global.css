@@ -468,3 +468,231 @@ body.mobile-nav-open {
   border-color: #d6ddd2;
   color: #54634e;
 }
+
+/* ============================================
+   Blog post — reading progress bar
+   ============================================ */
+
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--accent-copper);
+  z-index: 999;
+  transition: width 0.08s linear;
+  pointer-events: none;
+}
+
+/* ============================================
+   Blog post — dark hero header
+   ============================================ */
+
+.post-hero {
+  background: #1e2920;
+  padding: 3rem 0 2.5rem;
+  color: #fff;
+}
+
+.post-hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 1.4rem + 2vw, 2.75rem);
+  line-height: 1.18;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  max-width: 44rem;
+  text-wrap: balance;
+}
+
+.post-hero-desc {
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.1rem);
+  color: #9ab594;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  max-width: 38rem;
+}
+
+.post-hero-meta {
+  font-size: 0.875rem;
+  color: #6b8565;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.post-hero-dot {
+  margin: 0 0.35rem;
+  opacity: 0.4;
+}
+
+.post-hero-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #b0c4ab;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.2s, color 0.2s;
+}
+
+.post-hero-tag:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* ============================================
+   Blog post — two-column grid layout
+   ============================================ */
+
+.post-grid {
+  display: grid;
+  grid-template-columns: 1fr 272px;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .post-sidebar {
+    display: none;
+  }
+}
+
+/* ============================================
+   Blog post — sticky sidebar
+   ============================================ */
+
+.sidebar-sticky {
+  position: sticky;
+  top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Table of Contents */
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-link {
+  display: block;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.toc-link:hover {
+  color: var(--primary-sage);
+  background: #f5f7f4;
+  border-left-color: #c8d5c4;
+}
+
+.toc-link-active {
+  color: var(--primary-sage) !important;
+  border-left-color: var(--primary-sage) !important;
+  font-weight: 600;
+}
+
+.toc-h3 {
+  padding-left: 1.4rem;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+#toc-container {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 1.1rem 1.1rem 1.1rem 0.9rem;
+}
+
+/* Sidebar newsletter */
+
+.newsletter-sidebar {
+  background: var(--primary-sage);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+/* ============================================
+   IPO tracker — market badges
+   ============================================ */
+
+.market-badge-tasi {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: #e5e9e3;
+  color: #54634e;
+}
+
+.market-badge-nomu {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ============================================
+   Reading prose — enhanced callout blocks
+   (use in MDX as > [!TIP] or > [!NOTE] etc.)
+   ============================================ */
+
+.reading-prose .callout-tip,
+.reading-prose .callout-note,
+.reading-prose .callout-warning {
+  border-radius: 6px;
+  padding: 0.9rem 1.1rem;
+  margin: 1.8rem 0;
+  font-size: 0.92em;
+  line-height: 1.65;
+}
+
+.reading-prose .callout-tip {
+  background: #f0fdf4;
+  border-left: 3px solid #22c55e;
+  color: #14532d;
+}
+
+.reading-prose .callout-note {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  color: #1e3a5f;
+}
+
+.reading-prose .callout-warning {
+  background: #fffbeb;
+  border-left: 3px solid #f59e0b;
+  color: #78350f;
+}
