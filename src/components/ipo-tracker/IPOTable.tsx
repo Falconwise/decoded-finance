@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
@@ -9,6 +9,28 @@ import {
     type SortingState,
 } from '@tanstack/react-table';
 import type { IPORecord } from '../../data/ipo-data';
+
+// ---- Live price worker ----
+// Set PUBLIC_PRICE_WORKER_URL in your Cloudflare Pages environment variables
+// (or .env.local file) to the deployed Worker URL, e.g.:
+//   PUBLIC_PRICE_WORKER_URL=https://decoded-finance-price-updater.YOUR_SUBDOMAIN.workers.dev
+const PRICE_WORKER_URL: string = import.meta.env.PUBLIC_PRICE_WORKER_URL || '';
+
+// ---- Types ----
+
+interface LivePriceEntry {
+    symbol: string;
+    currentPrice: number | null;
+    returnPct: number | null;
+    updatedAt: string;
+}
+
+interface PriceCache {
+    prices: LivePriceEntry[];
+    fetchedAt: string;
+}
+
+// ---- Component props ----
 
 interface Props {
     data: IPORecord[];
@@ -21,6 +43,35 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
     const [globalFilter, setGlobalFilter] = useState('');
     const [sectorFilter, setSectorFilter] = useState('all');
 
+    // Live price state
+    const [livePrices, setLivePrices] = useState<Record<string, LivePriceEntry>>({});
+    const [pricesStatus, setPricesStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
+    const [pricesFetchedAt, setPricesFetchedAt] = useState<string | null>(null);
+
+    // Fetch live prices from Cloudflare Worker on mount
+    useEffect(() => {
+        if (!PRICE_WORKER_URL) return;
+
+        setPricesStatus('loading');
+        fetch(`${PRICE_WORKER_URL}/prices`)
+            .then((res) => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json() as Promise<PriceCache>;
+            })
+            .then((cache) => {
+                const map: Record<string, LivePriceEntry> = {};
+                for (const entry of cache.prices) {
+                    if (entry.currentPrice !== null) map[entry.symbol] = entry;
+                }
+                setLivePrices(map);
+                setPricesFetchedAt(cache.fetchedAt);
+                setPricesStatus('ok');
+            })
+            .catch(() => {
+                setPricesStatus('error');
+            });
+    }, []);
+
     const filteredData = useMemo(() => {
         if (sectorFilter === 'all') return data;
         return data.filter((ipo) => ipo.sector === sectorFilter);
@@ -28,6 +79,10 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
 
     const hasPublishedCaseStudy = (ipo: IPORecord) =>
         ipo.has_case_study && availableCaseStudySlugs.includes(ipo.id);
+
+    // Resolve the best available return % for a row
+    const getLiveReturn = (symbol: string, staticReturn: number): number =>
+        livePrices[symbol]?.returnPct ?? staticReturn;
 
     const columns = useMemo<ColumnDef<IPORecord>[]>(
         () => [
@@ -68,6 +123,40 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                 ),
             },
             {
+                id: 'current_price',
+                header: 'Current Price',
+                enableSorting: false,
+                cell: ({ row }) => {
+                    const live = livePrices[row.original.symbol];
+                    if (pricesStatus === 'loading') {
+                        return (
+                            <span style={{ color: '#aaa', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+                                …
+                            </span>
+                        );
+                    }
+                    if (!live?.currentPrice) {
+                        return <span style={{ color: '#bbb', fontSize: '0.75rem' }}>—</span>;
+                    }
+                    return (
+                        <span style={{ fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            SAR {live.currentPrice.toFixed(2)}
+                            <span style={{
+                                fontSize: '0.55rem',
+                                fontWeight: 700,
+                                letterSpacing: '0.3px',
+                                color: '#16a34a',
+                                background: '#dcfce7',
+                                padding: '1px 4px',
+                                borderRadius: '3px',
+                            }}>
+                                LIVE
+                            </span>
+                        </span>
+                    );
+                },
+            },
+            {
                 accessorKey: 'market_cap_display',
                 header: 'Market Cap',
                 cell: ({ getValue }) => (
@@ -77,13 +166,23 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
             {
                 accessorKey: 'return_from_ipo',
                 header: 'Return',
-                cell: ({ getValue }) => {
-                    const val = getValue() as number;
+                sortingFn: (rowA, rowB) => {
+                    const a = getLiveReturn(rowA.original.symbol, rowA.original.return_from_ipo);
+                    const b = getLiveReturn(rowB.original.symbol, rowB.original.return_from_ipo);
+                    return a - b;
+                },
+                cell: ({ getValue, row }) => {
+                    const live = livePrices[row.original.symbol];
+                    const val = live?.returnPct ?? (getValue() as number);
+                    const isLive = !!live?.returnPct;
                     const color = val > 0 ? '#16a34a' : val < 0 ? '#dc2626' : '#888';
                     const sign = val > 0 ? '+' : '';
                     return (
-                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                             {sign}{val.toFixed(1)}%
+                            {isLive && (
+                                <span title="Live price" style={{ fontSize: '0.65rem', opacity: 0.65 }}>↻</span>
+                            )}
                         </span>
                     );
                 },
@@ -136,7 +235,8 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                 enableSorting: false,
             },
         ],
-        [availableCaseStudySlugs]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [availableCaseStudySlugs, livePrices, pricesStatus]
     );
 
     const table = useReactTable({
@@ -150,10 +250,22 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
         getFilteredRowModel: getFilteredRowModel(),
     });
 
+    // Format the "prices as of" timestamp for display
+    const pricesAsOf = pricesFetchedAt
+        ? new Date(pricesFetchedAt).toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              timeZoneName: 'short',
+          })
+        : null;
+
     return (
         <div>
             {/* Filter Controls */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <input
                     type="text"
                     placeholder="Search companies..."
@@ -186,6 +298,46 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                     ))}
                 </select>
             </div>
+
+            {/* Live price status bar */}
+            {PRICE_WORKER_URL && (
+                <div style={{
+                    marginBottom: '12px',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    fontSize: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    ...(pricesStatus === 'ok'
+                        ? { background: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0' }
+                        : pricesStatus === 'error'
+                        ? { background: '#fef2f2', color: '#991b1b', border: '1px solid #fecaca' }
+                        : { background: '#f9fafb', color: '#6b7280', border: '1px solid #e5e7eb' }),
+                }}>
+                    {pricesStatus === 'loading' && (
+                        <>
+                            <span style={{ fontSize: '0.7rem' }}>⏳</span>
+                            Fetching live prices from Yahoo Finance…
+                        </>
+                    )}
+                    {pricesStatus === 'ok' && (
+                        <>
+                            <span style={{ fontSize: '0.7rem' }}>●</span>
+                            Live prices via Yahoo Finance
+                            {pricesAsOf && (
+                                <span style={{ opacity: 0.7 }}>· as of {pricesAsOf}</span>
+                            )}
+                        </>
+                    )}
+                    {pricesStatus === 'error' && (
+                        <>
+                            <span style={{ fontSize: '0.7rem' }}>⚠</span>
+                            Could not fetch live prices — showing last known data
+                        </>
+                    )}
+                </div>
+            )}
 
             {/* Desktop Table */}
             <div className="ipo-table-desktop">
@@ -254,7 +406,9 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
             <div className="ipo-table-mobile">
                 {table.getRowModel().rows.map((row) => {
                     const ipo = row.original;
-                    const returnColor = ipo.return_from_ipo > 0 ? '#16a34a' : ipo.return_from_ipo < 0 ? '#dc2626' : '#888';
+                    const live = livePrices[ipo.symbol];
+                    const returnVal = live?.returnPct ?? ipo.return_from_ipo;
+                    const returnColor = returnVal > 0 ? '#16a34a' : returnVal < 0 ? '#dc2626' : '#888';
                     return (
                         <div
                             key={row.id}
@@ -274,8 +428,11 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                                         {ipo.symbol} · {ipo.sector}
                                     </div>
                                 </div>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: returnColor, fontSize: '0.9rem' }}>
-                                    {ipo.return_from_ipo > 0 ? '+' : ''}{ipo.return_from_ipo.toFixed(1)}%
+                                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: returnColor, fontSize: '0.9rem', textAlign: 'right' }}>
+                                    {returnVal > 0 ? '+' : ''}{returnVal.toFixed(1)}%
+                                    {live?.returnPct != null && (
+                                        <span style={{ display: 'block', fontSize: '0.6rem', fontWeight: 400, color: '#16a34a', opacity: 0.8 }}>live ↻</span>
+                                    )}
                                 </span>
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem' }}>
@@ -283,10 +440,17 @@ export default function IPOTable({ data, sectors, availableCaseStudySlugs }: Pro
                                     <span style={{ color: '#888' }}>IPO Price: </span>
                                     <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>SAR {ipo.offer_price.toFixed(2)}</span>
                                 </div>
-                                <div>
-                                    <span style={{ color: '#888' }}>Market Cap: </span>
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{ipo.market_cap_display}</span>
-                                </div>
+                                {live?.currentPrice != null ? (
+                                    <div>
+                                        <span style={{ color: '#888' }}>Current: </span>
+                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>SAR {live.currentPrice.toFixed(2)}</span>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <span style={{ color: '#888' }}>Market Cap: </span>
+                                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{ipo.market_cap_display}</span>
+                                    </div>
+                                )}
                             </div>
                             {hasPublishedCaseStudy(ipo) ? (
                                 <a href={`/case-studies/${ipo.id}`} style={{ display: 'inline-block', marginTop: '8px', color: '#B86E4B', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none' }}>

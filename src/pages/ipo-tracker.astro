@@ -21,10 +21,12 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
         <p class="label text-copper mb-2">Live Database</p>
         <h1 class="mb-3">Saudi IPO Tracker</h1>
         <p class="text-gray-600 max-w-2xl">
-          Complete database of Saudi Arabian IPOs with performance data, valuation metrics, and in-depth analysis links. Updated regularly.
+          Complete database of Saudi Arabian IPOs with performance data, valuation metrics, and in-depth analysis links.
+          Current prices are fetched daily from Yahoo Finance (.SR tickers) via a Cloudflare Worker.
         </p>
         <p class="meta mt-2">
-          Last Updated: {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          Data as of: {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          &nbsp;·&nbsp;Prices updated daily after Tadawul close (3 pm AST)
         </p>
       </div>
 
@@ -56,9 +58,11 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
       <div class="card p-4 md:p-6">
         <div class="mb-4 p-3 rounded bg-alabaster border border-gray-200">
           <p class="text-xs text-gray-600 m-0 leading-relaxed">
-            <strong>As of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            <span class="mx-2">•</span>
             <strong>Source:</strong> {ipoData.metadata.data_source}
+            <span class="mx-2">•</span>
+            <strong>Live prices:</strong> Yahoo Finance (Tadawul .SR tickers) via daily Cloudflare Worker cron
+            <span class="mx-2">•</span>
+            <strong>IPO data as of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
         <IPOTable
@@ -71,7 +75,8 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
 
       <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
         <p class="text-xs text-gray-600 m-0 leading-relaxed">
-          IPO tracker entries are informational snapshots and may be delayed, incomplete, or revised. They should not be treated as real-time market data or investment recommendations.
+          IPO tracker entries are informational snapshots. Live prices are sourced from Yahoo Finance via the Tadawul .SR ticker format and are updated once daily after market close — they may be delayed, incomplete, or revised.
+          This data does not constitute real-time market data or investment advice.
         </p>
       </div>
     </div>
