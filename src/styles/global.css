@@ -441,9 +441,19 @@ body.mobile-nav-open {
 
 /* ---- Blog topic chips ---- */
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
 .topic-chip {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   border: 1px solid #e5e7eb;
   border-radius: 999px;
   background: #fff;
