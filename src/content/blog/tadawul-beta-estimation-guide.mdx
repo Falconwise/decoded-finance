@@ -8,11 +8,11 @@ description: "How to estimate beta for Saudi companies using regression cautious
 featured: false
 ---
 
-{/* IMAGE PLACEHOLDER: A scatter plot showing beta regression with a Tadawul-listed stock — demonstrating thin trading noise vs. a cleaner bottom-up estimate */}
+{/* IMAGE PLACEHOLDER: A scatter plot showing beta regression with a Tadawul-listed stock - demonstrating thin trading noise vs. a cleaner bottom-up estimate */}
 
 Beta is an estimate of how a stock co-moves with the broader market. In Saudi markets, beta estimation carries additional complexity due to liquidity differences, free float effects, and periodic market structure changes.
 
-The goal is not to defend a single method but to choose an approach that is appropriate for the valuation use case — and to document that choice clearly.
+The goal is not to defend a single method but to choose an approach that is appropriate for the valuation use case - and to document that choice clearly.
 
 ---
 
@@ -27,7 +27,7 @@ Beta is a multiplier. If the estimate is unstable, cost of equity inherits that 
 ## Why Regression Beta Can Be Unreliable in Saudi Markets
 
 Regression beta may be noisy when:
-- Trading is thin relative to the index — price moves reflect liquidity, not systematic risk
+- Trading is thin relative to the index - price moves reflect liquidity, not systematic risk
 - The company has had structural changes in leverage, business mix, or ownership
 - The observation period spans a market regime shift (opening to foreign investors, index reclassification, etc.)
 
@@ -37,7 +37,7 @@ This does not mean regression beta is always wrong. It means you should test its
 
 ## Practical Regression Hygiene
 
-- Test multiple windows — compare 2-year and 5-year estimates
+- Test multiple windows - compare 2-year and 5-year estimates
 - Compare daily vs. weekly returns for thinly traded names; weekly often reduces noise
 - Consider an adjusted (Blume-adjusted) beta when the raw regression is extreme: **β_adjusted = (2/3 × β_raw) + (1/3 × 1.0)**
 - Document the window, frequency, and index used
