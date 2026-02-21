@@ -42,17 +42,17 @@ export interface IPODataset {
 
 export const ipoData: IPODataset = {
     metadata: {
-        last_updated: "2026-02-20",
+        last_updated: "2026-02-21",
         total_ipos: 19,
         data_source: "Abdul Gaffar Mohammed, CFA - decoded.finance",
         description: "Comprehensive Saudi Arabia IPO database (2020-2025) with performance tracking"
     },
     summary_stats: {
         total_market_cap: 158800000000,
-        average_return: 38.7,
+        average_return: 78.5,
         best_performer: {
-            company: "Saudi Tadawul Group",
-            return: 133.3
+            company: "East Pipes Integrated",
+            return: 624.5
         },
         sectors: {
             consumer_discretionary: 5,
@@ -76,8 +76,8 @@ export const ipoData: IPODataset = {
             offer_price: 112.48,
             market_cap_sar: 12600000000,
             market_cap_display: "SAR 12.6B",
-            return_from_ipo: 133.3,
-            performance_badge: "Top Performer",
+            return_from_ipo: 27.5,
+            performance_badge: "Solid",
             has_case_study: true,
             description: "Saudi stock exchange operator"
         },
@@ -91,8 +91,8 @@ export const ipoData: IPODataset = {
             offer_price: 74.79,
             market_cap_sar: 7500000000,
             market_cap_display: "SAR 7.5B",
-            return_from_ipo: 112.5,
-            performance_badge: "Top Performer",
+            return_from_ipo: -77.0,
+            performance_badge: "Underperformer",
             has_case_study: true,
             description: "Real estate development in Mecca near Holy Mosque"
         },
@@ -106,8 +106,8 @@ export const ipoData: IPODataset = {
             offer_price: 161.45,
             market_cap_sar: 36000000000,
             market_cap_display: "SAR 36.0B",
-            return_from_ipo: 88.1,
-            performance_badge: "Strong Performer",
+            return_from_ipo: 7.8,
+            performance_badge: "Positive",
             has_case_study: true,
             description: "Renewable energy and power generation leader"
         },
@@ -121,8 +121,8 @@ export const ipoData: IPODataset = {
             offer_price: 240.05,
             market_cap_sar: 57100000000,
             market_cap_display: "SAR 57.1B",
-            return_from_ipo: 85.1,
-            performance_badge: "Strong Performer",
+            return_from_ipo: 1.3,
+            performance_badge: "Neutral",
             has_case_study: true,
             description: "Leading private healthcare provider in Saudi Arabia"
         },
@@ -136,8 +136,8 @@ export const ipoData: IPODataset = {
             offer_price: 80,
             market_cap_sar: 5800000000,
             market_cap_display: "SAR 5.8B",
-            return_from_ipo: 75.6,
-            performance_badge: "Strong Performer",
+            return_from_ipo: -27.2,
+            performance_badge: "Underperformer",
             has_case_study: true,
             description: "Low-cost airline capitalizing on tourism growth"
         },
@@ -151,8 +151,8 @@ export const ipoData: IPODataset = {
             offer_price: 108.52,
             market_cap_sar: 12000000000,
             market_cap_display: "SAR 12.0B",
-            return_from_ipo: 40.0,
-            performance_badge: "Solid",
+            return_from_ipo: -95.7,
+            performance_badge: "Underperformer",
             has_case_study: true,
             description: "Major supermarket and hypermarket chain"
         },
@@ -166,8 +166,8 @@ export const ipoData: IPODataset = {
             offer_price: 11.54,
             market_cap_sar: 2250000000,
             market_cap_display: "SAR 2.3B",
-            return_from_ipo: 33.9,
-            performance_badge: "Solid",
+            return_from_ipo: 149.6,
+            performance_badge: "Top Performer",
             has_case_study: true,
             description: "Car rental services across Saudi Arabia"
         },
@@ -196,8 +196,8 @@ export const ipoData: IPODataset = {
             offer_price: 7.71,
             market_cap_sar: 1250000000,
             market_cap_display: "SAR 1.3B",
-            return_from_ipo: 28.2,
-            performance_badge: "Solid",
+            return_from_ipo: -16.1,
+            performance_badge: "Underperformer",
             has_case_study: false,
             description: "Real estate investment trust"
         },
@@ -211,8 +211,8 @@ export const ipoData: IPODataset = {
             offer_price: 14.51,
             market_cap_sar: 2000000000,
             market_cap_display: "SAR 2.0B",
-            return_from_ipo: 22.1,
-            performance_badge: "Positive",
+            return_from_ipo: 601.6,
+            performance_badge: "Top Performer",
             has_case_study: false,
             description: "Private education services"
         },
@@ -226,8 +226,8 @@ export const ipoData: IPODataset = {
             offer_price: 9.77,
             market_cap_sar: 1000000000,
             market_cap_display: "SAR 1.0B",
-            return_from_ipo: 15.5,
-            performance_badge: "Positive",
+            return_from_ipo: -74.3,
+            performance_badge: "Underperformer",
             has_case_study: true,
             description: "Consumer finance company (Nomu market)"
         },
@@ -241,8 +241,8 @@ export const ipoData: IPODataset = {
             offer_price: 14.44,
             market_cap_sar: 1800000000,
             market_cap_display: "SAR 1.8B",
-            return_from_ipo: 11.2,
-            performance_badge: "Positive",
+            return_from_ipo: 288.9,
+            performance_badge: "Top Performer",
             has_case_study: false,
             description: "Food products and distribution"
         },
@@ -256,8 +256,8 @@ export const ipoData: IPODataset = {
             offer_price: 20.29,
             market_cap_sar: 2600000000,
             market_cap_display: "SAR 2.6B",
-            return_from_ipo: 8.9,
-            performance_badge: "Positive",
+            return_from_ipo: 624.5,
+            performance_badge: "Top Performer",
             has_case_study: false,
             description: "Steel pipes for oil & gas infrastructure"
         },
@@ -271,8 +271,8 @@ export const ipoData: IPODataset = {
             offer_price: 12.36,
             market_cap_sar: 1400000000,
             market_cap_display: "SAR 1.4B",
-            return_from_ipo: 6.6,
-            performance_badge: "Neutral",
+            return_from_ipo: 122.3,
+            performance_badge: "Top Performer",
             has_case_study: true,
             description: "Auto rental and trading services"
         },
@@ -286,7 +286,7 @@ export const ipoData: IPODataset = {
             offer_price: 42.16,
             market_cap_sar: 4600000000,
             market_cap_display: "SAR 4.6B",
-            return_from_ipo: -2.6,
+            return_from_ipo: -65.4,
             performance_badge: "Underperformer",
             has_case_study: false,
             description: "Internet and communications services"
@@ -301,7 +301,7 @@ export const ipoData: IPODataset = {
             offer_price: 7.93,
             market_cap_sar: 1500000000,
             market_cap_display: "SAR 1.5B",
-            return_from_ipo: -3.8,
+            return_from_ipo: -35.4,
             performance_badge: "Underperformer",
             has_case_study: true,
             description: "Real estate finance company"
@@ -316,8 +316,8 @@ export const ipoData: IPODataset = {
             offer_price: 15.4,
             market_cap_sar: 3500000000,
             market_cap_display: "SAR 3.5B",
-            return_from_ipo: -5.1,
-            performance_badge: "Underperformer",
+            return_from_ipo: 44.8,
+            performance_badge: "Solid",
             has_case_study: false,
             description: "Digital security and e-government solutions"
         },
