@@ -1,5 +1,6 @@
 # ============================================================
 # decoded.finance — Cloudflare Worker: IPO Price Updater
+# Last deployed: 2026-02-21
 # ============================================================
 
 name = "decoded-finance-price-updater"
