@@ -706,3 +706,18 @@ body.mobile-nav-open {
   border-left: 3px solid #f59e0b;
   color: #78350f;
 }
+
+/* ---- IPO Tracker: responsive table/card toggle ---- */
+.ipo-table-desktop { display: block; }
+.ipo-table-mobile  { display: none;  }
+.ipo-mobile-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.625rem;
+}
+@media (max-width: 768px) {
+  .ipo-table-desktop { display: none;  }
+  .ipo-table-mobile  { display: block; }
+}

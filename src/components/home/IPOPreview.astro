@@ -1,8 +1,11 @@
 ---
-import { getRecentIPOs } from '../../data/ipo-data';
+import { getPublicIPOs, getRecentIPOs, getUniqueSectors } from '../../data/ipo-data';
 import { formatDate } from '../../utils/utils';
 
+const allIPOs = getPublicIPOs();
 const recentIPOs = getRecentIPOs(4);
+const sectorCount = new Set(allIPOs.map(i => i.sector)).size;
+const yearCount = new Set(allIPOs.map(i => i.listing_year)).size;
 ---
 
 <section class="section bg-alabaster">
@@ -18,20 +21,20 @@ const recentIPOs = getRecentIPOs(4);
     <!-- Stats Row -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <div class="card text-center py-5">
-        <span class="font-data text-2xl font-bold text-sage block">19</span>
+        <span class="font-data text-2xl font-bold text-sage block">{allIPOs.length}</span>
         <span class="text-sm text-gray-500">IPOs Tracked</span>
       </div>
       <div class="card text-center py-5">
-        <span class="font-data text-2xl font-bold text-sage block">SAR 158.8B</span>
-        <span class="text-sm text-gray-500">Total Market Cap</span>
+        <span class="font-data text-2xl font-bold text-sage block">{sectorCount}</span>
+        <span class="text-sm text-gray-500">Sectors</span>
       </div>
       <div class="card text-center py-5">
-        <span class="font-data text-2xl font-bold text-sage block">+38.7%</span>
-        <span class="text-sm text-gray-500">Average Return</span>
+        <span class="font-data text-2xl font-bold text-sage block">{yearCount}</span>
+        <span class="text-sm text-gray-500">Years Covered</span>
       </div>
       <div class="card text-center py-5">
-        <span class="font-data text-2xl font-bold text-sage block">8</span>
-        <span class="text-sm text-gray-500">Sectors Covered</span>
+        <span class="font-data text-2xl font-bold text-sage block">Live</span>
+        <span class="text-sm text-gray-500">Daily Price Updates</span>
       </div>
     </div>
 
@@ -41,19 +44,21 @@ const recentIPOs = getRecentIPOs(4);
         <div class="card">
           <div class="flex items-start justify-between gap-2 mb-3">
             <span class="badge badge-sage normal-case tracking-normal whitespace-normal leading-tight">{ipo.sector}</span>
-            <span class={`font-data text-sm font-bold ${ipo.return_from_ipo >= 0 ? 'performance-positive' : 'performance-negative'}`}>
-              {ipo.return_from_ipo > 0 ? '+' : ''}{ipo.return_from_ipo}%
+            <span class={`text-xs font-data font-semibold ${ipo.market === 'TASI' ? 'text-sage-600' : 'text-amber-700'}`}>
+              {ipo.market}
             </span>
           </div>
           <h4 class="font-heading text-base font-bold mb-1">{ipo.company_name}</h4>
           <p class="text-xs text-gray-400 font-data mb-3">{ipo.symbol} · {formatDate(ipo.listing_date)}</p>
           <div class="flex justify-between items-center text-sm">
             <span class="text-gray-500">IPO Price</span>
-            <span class="font-data font-bold">SAR {ipo.offer_price.toFixed(2)}</span>
+            <span class="font-data font-bold">
+              {ipo.offer_price !== null ? `SAR ${ipo.offer_price.toFixed(2)}` : 'Direct listing'}
+            </span>
           </div>
           <div class="flex justify-between items-center text-sm mt-1">
-            <span class="text-gray-500">Market Cap</span>
-            <span class="font-data font-bold">{ipo.market_cap_display}</span>
+            <span class="text-gray-500">Listed</span>
+            <span class="font-data">{formatDate(ipo.listing_date)}</span>
           </div>
         </div>
       ))}
@@ -65,7 +70,7 @@ const recentIPOs = getRecentIPOs(4);
 
     <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
       <p class="text-xs text-gray-600 m-0 leading-relaxed">
-        Data shown is an informational snapshot. For full methodology, source details, and latest as-of date, use the full IPO Tracker page.
+        Data shown is an informational snapshot. For live prices, P/E ratios, and full methodology, use the full IPO Tracker page.
       </p>
     </div>
   </div>
