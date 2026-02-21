@@ -38,9 +38,9 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
           <p class="text-xs text-gray-600 m-0 leading-relaxed">
             <strong>Source:</strong> {ipoData.metadata.data_source}
             <span class="mx-2">•</span>
-            <strong>Live prices:</strong> Yahoo Finance (Tadawul .SR tickers) via daily Cloudflare Worker cron
+            <strong>Live prices:</strong> Yahoo Finance (.SR tickers), updated daily after Tadawul close
             <span class="mx-2">•</span>
-            <strong>IPO data as of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            <strong>Data as of:</strong> {new Date(ipoData.metadata.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
         <IPOTable
@@ -54,8 +54,8 @@ const availableCaseStudySlugs = caseStudies.map((study) => study.slug);
 
       <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
         <p class="text-xs text-gray-600 m-0 leading-relaxed">
-          IPO tracker entries are informational snapshots. Live prices are sourced from Yahoo Finance via the Tadawul .SR ticker format and are updated once daily after market close — they may be delayed, incomplete, or revised.
-          Market classifications (TASI / Nomu) are for informational purposes. This data does not constitute real-time market data or investment advice.
+          Data is provided for informational purposes only. Live prices are sourced from Yahoo Finance and updated once daily after Tadawul market close — they may be delayed or revised.
+          This data does not constitute real-time market data or investment advice.
         </p>
       </div>
     </div>
