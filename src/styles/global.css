@@ -167,14 +167,14 @@ h3 { font-size: 1.5rem; }
 .reading-prose {
   max-width: 70ch;
   font-size: clamp(1rem, 0.98rem + 0.2vw, 1.14rem);
-  line-height: 1.82;
+  line-height: 1.7;
   color: #2f2f2f;
   text-wrap: pretty;
 }
 
 .prose > * + *,
 .reading-prose > * + * {
-  margin-top: 1.15em;
+  margin-top: 0.85em;
 }
 
 .prose p,
@@ -193,16 +193,16 @@ h3 { font-size: 1.5rem; }
 
 .prose h2,
 .reading-prose h2 {
-  margin-top: 2.6em;
-  margin-bottom: 0.7em;
-  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  margin-top: 1.9em;
+  margin-bottom: 0.5em;
+  font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.75rem);
 }
 
 .prose h3,
 .reading-prose h3 {
-  margin-top: 1.9em;
-  margin-bottom: 0.55em;
-  font-size: clamp(1.25rem, 1.12rem + 0.6vw, 1.5rem);
+  margin-top: 1.4em;
+  margin-bottom: 0.35em;
+  font-size: clamp(1.15rem, 1.05rem + 0.45vw, 1.35rem);
 }
 
 .prose hr,
@@ -214,23 +214,40 @@ h3 { font-size: 1.5rem; }
 }
 
 .prose ul,
+.reading-prose ul {
+  list-style-type: disc;
+  margin-top: 0.75em;
+  margin-bottom: 0.9em;
+  padding-left: 1.6em;
+}
+
 .prose ol,
-.reading-prose ul,
 .reading-prose ol {
-  margin-top: 1em;
-  margin-bottom: 1.15em;
-  padding-left: 1.35em;
+  list-style-type: decimal;
+  margin-top: 0.75em;
+  margin-bottom: 0.9em;
+  padding-left: 1.6em;
 }
 
 .prose li,
 .reading-prose li {
-  margin: 0.45em 0;
-  padding-left: 0.2em;
+  margin: 0.3em 0;
+  padding-left: 0.15em;
 }
 
 .prose li::marker,
 .reading-prose li::marker {
   color: #6f7f67;
+  font-weight: 600;
+}
+
+/* Nested lists */
+.prose li > ul,
+.prose li > ol,
+.reading-prose li > ul,
+.reading-prose li > ol {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 .prose a,
@@ -285,31 +302,46 @@ h3 { font-size: 1.5rem; }
 .reading-prose table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.8rem 0;
-  font-size: 0.95rem;
+  margin: 1.4rem 0;
+  font-size: 0.83rem;
   overflow: hidden;
-  border: 1px solid #e9e4d8;
+  border: 1px solid #e2dcd0;
   border-radius: 8px;
+  line-height: 1.45;
 }
 
 .prose thead,
 .reading-prose thead {
-  background-color: #f1ece0;
+  background-color: #eae5d8;
 }
 
 .prose th,
 .reading-prose th {
   color: #2f2f2f;
-  padding: 0.8rem 0.9rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
   font-weight: 700;
-  border-bottom: 1px solid #dfd8ca;
+  font-size: 0.78rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d8d0c0;
 }
 
 .prose td,
 .reading-prose td {
-  padding: 0.75rem 0.9rem;
-  border-bottom: 1px solid #efe9dc;
+  padding: 0.42rem 0.75rem;
+  border-bottom: 1px solid #ede8dc;
+  vertical-align: middle;
+}
+
+.prose tbody tr:nth-child(even),
+.reading-prose tbody tr:nth-child(even) {
+  background-color: #faf8f4;
+}
+
+.prose tbody tr:hover,
+.reading-prose tbody tr:hover {
+  background-color: #f4f0e8;
 }
 
 .prose tr:last-child td,
@@ -326,7 +358,7 @@ h3 { font-size: 1.5rem; }
   .prose,
   .reading-prose {
     max-width: 100%;
-    line-height: 1.72;
+    line-height: 1.65;
   }
 
   .prose table,
@@ -334,6 +366,7 @@ h3 { font-size: 1.5rem; }
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+    font-size: 0.78rem;
   }
 }
 
